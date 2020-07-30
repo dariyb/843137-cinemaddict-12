@@ -1,10 +1,10 @@
 "use strict";
 
-const FILMCOUNT = 5;
-const TOPRATED = 2;
-const MOSTCOMMENTED = 2;
+const FILM_COUNT = 5;
+const TOP_RATED = 2;
+const MOST_COMMENTED = 2;
 
-const createUserAccount = () => {
+const createUserAccountTemplate = () => {
   return (
     `<section class="header__profile profile">
       <p class="profile__rating">Movie Buff</p>
@@ -12,7 +12,7 @@ const createUserAccount = () => {
     </section>`
   );
 };
-const createSiteNavigation = () => {
+const createSiteNavigationTemplate = () => {
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">
@@ -25,14 +25,18 @@ const createSiteNavigation = () => {
     </nav>`
   );
 };
-const createSiteSortingList = () => {
+const createSiteSortingListTemplate = () => {
   return (
     `<ul class="sort">
       <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
       <li><a href="#" class="sort__button">Sort by date</a></li>
       <li><a href="#" class="sort__button">Sort by rating</a></li>
-    </ul>
-    <section class="films">
+    </ul>`
+  );
+};
+const createSiteFilmsSectionTemplate = () => {
+  return (
+    `<section class="films">
       <section class="films-list">
        <div class="films-list__container"></div>
       </section>
@@ -47,7 +51,7 @@ const createSiteSortingList = () => {
     </section>`
   );
 };
-const createSiteFilmsListElement = () => {
+const createSiteFilmsListElementTemplate = () => {
   return (
     `<article class="film-card">
       <h3 class="film-card__title">The Dance of Life</h3>
@@ -68,12 +72,12 @@ const createSiteFilmsListElement = () => {
     </article>`
   );
 };
-const createSiteFilmsList = () => {
+const createShowMoreFilmsTemplate = () => {
   return (
     `<button class="films-list__show-more">Show more</button>`
   );
 };
-const createFilmsStatistics = () => {
+const createFilmsStatisticsTemplate = () => {
   return (
     `<p>130 291 movies inside</p>`
   );
@@ -85,38 +89,38 @@ const render = (container, template, place) => {
 
 const siteHeaderElement = document.querySelector(`.header`);
 
-render(siteHeaderElement, createUserAccount(), `beforeend`);
+render(siteHeaderElement, createUserAccountTemplate(), `beforeend`);
 
 const siteMainElement = document.querySelector(`.main`);
 
-render(siteMainElement, createSiteNavigation(), `afterbegin`);
-render(siteMainElement, createSiteSortingList(), `beforeend`);
+render(siteMainElement, createSiteNavigationTemplate(), `afterbegin`);
+render(siteMainElement, createSiteSortingListTemplate(), `beforeend`);
+render(siteMainElement, createSiteFilmsSectionTemplate(), `beforeend`);
 
-const siteFilmsListContainer = document.querySelector(`.films-list__container`);
+const siteFilmsListContainer = siteMainElement.querySelector(`.films-list__container`);
 
-for (let i = 0; i < FILMCOUNT; i++) {
-  render(siteFilmsListContainer, createSiteFilmsListElement(), `beforeend`);
+for (let i = 0; i < FILM_COUNT; i++) {
+  render(siteFilmsListContainer, createSiteFilmsListElementTemplate(), `beforeend`);
 }
 
-const siteFilmsList = document.querySelector(`.films-list`);
+const siteFilmsList = siteMainElement.querySelector(`.films-list`);
 
-render(siteFilmsList, createSiteFilmsList(), `beforeend`);
+render(siteFilmsList, createShowMoreFilmsTemplate(), `beforeend`);
 
-const siteExtraTopFilms = document.querySelector(`.films-list--extra`);
+const siteExtraTopFilms = siteMainElement.querySelector(`.films-list--extra`);
 const siteExtraFilmsContainer = siteExtraTopFilms.querySelector(`.films-list__container`);
 
-for (let i = 0; i < TOPRATED; i++) {
-  render(siteExtraFilmsContainer, createSiteFilmsListElement(), `beforeend`);
+for (let i = 0; i < TOP_RATED; i++) {
+  render(siteExtraFilmsContainer, createSiteFilmsListElementTemplate(), `beforeend`);
 }
 
-const siteExtraMostFilms = document.querySelector(`.films-list--extra:last-child`);
+const siteExtraMostFilms = siteMainElement.querySelector(`.films-list--extra:last-child`);
 const extraFilmsContainer = siteExtraMostFilms.querySelector(`.films-list__container`);
 
-for (let i = 0; i < MOSTCOMMENTED; i++) {
-  render(extraFilmsContainer, createSiteFilmsListElement(), `beforeend`);
+for (let i = 0; i < MOST_COMMENTED; i++) {
+  render(extraFilmsContainer, createSiteFilmsListElementTemplate(), `beforeend`);
 }
 
-const siteMainFooter = document.querySelector(`.footer`);
-const siteFooterStatistics = siteMainFooter.querySelector(`.footer__statistics`);
+const siteFooterStatistics = document.querySelector(`.footer__statistics`);
 
-render(siteFooterStatistics, createFilmsStatistics(), `beforeend`);
+render(siteFooterStatistics, createFilmsStatisticsTemplate(), `beforeend`);
