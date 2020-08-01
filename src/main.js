@@ -3,12 +3,14 @@ import {createSiteNavigationTemplate} from "./view/navigation.js";
 import {createSiteSortingListTemplate} from "./view/sorting-list.js";
 import {createSiteFilmsSectionTemplate} from "./view/films-section.js";
 import {createSiteFilmsListElementTemplate} from "./view/films-list.js";
+import {createFilmsExtraList} from "./view/extra-list.js";
 import {createShowMoreFilmsTemplate} from "./view/show-more-button.js";
 import {createFilmsStatisticsTemplate} from "./view/films-statistics.js";
 
 const FILM_COUNT = 5;
 const TOP_RATED = 2;
 const MOST_COMMENTED = 2;
+const DOUBLE_SECTION = 2;
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -23,6 +25,11 @@ const siteMainElement = document.querySelector(`.main`);
 render(siteMainElement, createSiteNavigationTemplate(), `afterbegin`);
 render(siteMainElement, createSiteSortingListTemplate(), `beforeend`);
 render(siteMainElement, createSiteFilmsSectionTemplate(), `beforeend`);
+
+const siteFilmsElement = siteMainElement.querySelector(`.films`);
+for (let i = 0; i < DOUBLE_SECTION; i++) {
+  render(siteFilmsElement, createFilmsExtraList(), `beforeend`);
+}
 
 const siteFilmsListContainer = siteMainElement.querySelector(`.films-list__container`);
 
