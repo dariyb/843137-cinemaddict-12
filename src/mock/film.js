@@ -1,3 +1,6 @@
+const MIN_COMMENT_AMOUNT = 0;
+const MAX_COMMENT_AMOUNT = 5;
+
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -8,7 +11,9 @@ const getRandomInteger = (a = 0, b = 1) => {
 const getRandomNumber = (a = 1, b = 0) => {
   const lower = Math.min(a, b);
   const upper = Math.max(a, b);
-  return lower + Math.random() * (upper - lower);
+  let point = lower + Math.random() * (upper - lower);
+
+  return point.toFixed(1);
 };
 
 const shuffleArray = (array) => {
@@ -21,6 +26,10 @@ const shuffleArray = (array) => {
     array[index] = temp;
   }
   return array;
+};
+
+const groupComments = (item, amount) => {
+  return new Array(amount).fill().map(item);
 };
 
 const getPosterFile = () => {
@@ -98,6 +107,45 @@ const getDescription = () => {
   return description.split(`.`).slice(0, randomIndex).join(`.`);
 };
 
+const getCommentText = () => {
+  const texts = [`Cried a river`, `WTF`, `LOL`, `Best thing EVER`, `Do NOT Recommend`, `Wish I was there`, `AMAZING!!!`];
+
+  const randomIndex = getRandomInteger(0, texts.length - 1);
+  return texts[randomIndex];
+};
+
+const getEmoji = () => {
+  const emojies = [`angry.png`, `puke.png`, `sleeping.png`, `smile.png`];
+
+  const randomIndex = getRandomInteger(0, emojies.length - 1);
+  return emojies[randomIndex];
+};
+
+const getAuthor = () => {
+  const authors = [`Jonny Cash`, `David Bowie`, `Incognito`, `Lucky Charly`, `Filmo-guru`, `Stella Prize`, `Marry Jo`];
+
+  const randomIndex = getRandomInteger(0, authors.length - 1);
+  return authors[randomIndex];
+};
+
+const generateCommentDate = () => {
+  const currentDay = new Date();
+
+  currentDay.setHours(23, 59, 59, 999);
+  currentDay.setDate(currentDay.getDate());
+
+  return new Date(currentDay);
+};
+
+const getComments = () => {
+  return {
+    text: getCommentText(),
+    emoji: `./images/emoji/${getEmoji()}`,
+    author: getAuthor(),
+    date: generateCommentDate()
+  };
+};
+
 export const generateFilmInfo = () => {
   return {
     poster: `./images/posters/${getPosterFile()}`,
@@ -107,6 +155,6 @@ export const generateFilmInfo = () => {
     runningTime: getRunningTime(),
     genre: getGenre(),
     description: getDescription(),
-    // comment
+    comments: groupComments(getComments, getRandomInteger(MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT))
   };
 };
