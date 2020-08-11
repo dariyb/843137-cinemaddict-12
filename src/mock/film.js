@@ -1,6 +1,5 @@
 import {getRandomInteger, getRandomNumber, shuffleArray, getRandomizeInfo} from "../utils.js";
-const MIN_COMMENT_AMOUNT = 0;
-const MAX_COMMENT_AMOUNT = 5;
+import {MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT} from "../constants.js";
 
 const directors = [`Camden Derick`, `Finn Weys`, `Cemeron Case`, `Anthony Pull`, `Fill Blacke`];
 const filmsNames = [`Blade`, `Titanic`, `Taxi`, `My soul to take`, `Harry Potter`, `You are next`, `Hangover`];
@@ -120,6 +119,9 @@ export const generateFilmInfo = () => {
     director: getRandomizeInfo(directors),
     writers: getRandomizeInfo(writers),
     actors: getRandomizeInfo(actors),
-    country: getRandomizeInfo(countries)
+    country: getRandomizeInfo(countries),
+    isWatchlist: Boolean(getRandomInteger(0, 1)),
+    isWatched: Boolean(getRandomInteger(0, 1)),
+    isFavorite: Boolean(getRandomInteger(0, 1))
   };
 };

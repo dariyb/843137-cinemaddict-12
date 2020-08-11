@@ -1,10 +1,3 @@
-export const FILM_COUNT = 15;
-export const FILM_COUNT_PER_STEP = 5;
-export const TOP_RATED = 2;
-export const MOST_COMMENTED = 2;
-export const DOUBLE_SECTION = 2;
-export const ESC_KEYCODE = 27;
-
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -33,7 +26,7 @@ export const shuffleArray = (array) => {
 };
 
 export const humanizeCommentDate = (dueDate) => {
-  return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`});
+  return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`, hour12: false});
 };
 
 export const getRandomizeInfo = (info) => {
