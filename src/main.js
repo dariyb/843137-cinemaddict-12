@@ -27,9 +27,9 @@ const siteMainElement = document.querySelector(`.main`);
 
 const countWatchlist = (added) => {
   const filmListNew = {
-    watchlist: added.slice().filter((index) => index.isWatchlist === true),
-    favorite: added.slice().filter((index) => index.isFavorite === true),
-    watched: added.slice().filter((index) => index.isWatched === true),
+    watchlist: added.filter((index) => index.isWatchlist === true),
+    favorite: added.filter((index) => index.isFavorite === true),
+    watched: added.filter((index) => index.isWatched === true),
   };
   return filmListNew;
 };
