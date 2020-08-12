@@ -121,7 +121,7 @@ export const generateFilmInfo = () => {
     actors: getRandomizeInfo(actors),
     country: getRandomizeInfo(countries),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
-    isWatched: Boolean(getRandomInteger(0, 1)),
+    isHistory: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1))
   };
 };

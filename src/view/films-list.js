@@ -1,6 +1,6 @@
 export const createSiteFilmsListElementTemplate = (film) => {
   const MAX_DESCRIPTION_LENGTH = 140;
-  const {poster, name, rating, releaseDate, runningTime, genre, description, comments, isWatchlist, isWatched, isFavorite} = film;
+  const {poster, name, rating, releaseDate, runningTime, genre, description, comments, isWatchlist, isHistory, isFavorite} = film;
 
   const reduction = (descText, maxLength) => {
     if (descText.length > maxLength) {
@@ -13,7 +13,7 @@ export const createSiteFilmsListElementTemplate = (film) => {
     ? `film-card__controls-item--active`
     : ``;
 
-  const watchedClassName = isWatched
+  const watchedClassName = isHistory
     ? `film-card__controls-item--active`
     : ``;
 
