@@ -1,4 +1,6 @@
-export const createFilmDetailsTemplate = (film) => {
+import {createElement} from "../utils.js";
+
+const createFilmDetailsTemplate = (film) => {
   const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite} = film;
 
   const watchlistClassName = isWatchlist
@@ -63,6 +65,10 @@ export const createFilmDetailsTemplate = (film) => {
                 <td class="film-details__term">Country</td>
                 <td class="film-details__cell">${country}</td>
               </tr>
+              <tr class="film-details__row">
+                <td class="film-details__term">${genre.title}</td>
+                <td class="film-details__cell"></td>
+              </tr>
             </table>
 
             <p class="film-details__film-description">
@@ -123,3 +129,22 @@ export const createFilmDetailsTemplate = (film) => {
     </form>
   </section>`;
 };
+
+export default class FilmPopup {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

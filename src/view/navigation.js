@@ -1,4 +1,6 @@
-export const createSiteNavigationTemplate = (films) => {
+import {createElement} from "../utils.js";
+
+const createSiteNavigationTemplate = (films) => {
   const {watchlist, favorite, history} = films;
   return (
     `<nav class="main-navigation">
@@ -12,3 +14,22 @@ export const createSiteNavigationTemplate = (films) => {
     </nav>`
   );
 };
+
+export default class Navigation {
+  constructor(films) {
+    this._films = films;
+    this._element = null;
+  }
+  getTemplate() {
+    return createSiteNavigationTemplate(this._films);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
