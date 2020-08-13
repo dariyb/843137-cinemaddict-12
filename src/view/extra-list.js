@@ -27,3 +27,5 @@ export default class FilmsExtraList {
     this._element = null;
   }
 }
+
+// <div class="films-list__container"></div>
