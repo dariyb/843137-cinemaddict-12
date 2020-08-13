@@ -12,7 +12,6 @@ import FilmPopupView from "./view/film-details.js";
 import {generateFilmInfo} from "./mock/film.js";
 import {FILM_COUNT, TOP_RATED, MOST_COMMENTED, DOUBLE_SECTION, ESC_KEYCODE, FILM_COUNT_PER_STEP} from "./constants.js";
 import FilmCommentView from "./view/popup-comments.js";
-import FilmGenresView from "./view/genres.js";
 import FilmGenreView from "./view/genre.js";
 import {RenderPosition, render} from "./utils.js";
 
@@ -46,7 +45,6 @@ render(filmsListComponent.getElement(), filmsListContainerComponent.getElement()
 
 const renderFilm = (filmListElement, film) => {
   const filmComponent = new FilmsListElementView(film);
-  // const filmPopupComponent = new FilmPopupView(film);
 
   render(filmListElement, filmComponent.getElement(), RenderPosition.BEFOREEND);
 };
@@ -60,7 +58,8 @@ for (let i = 0; i < DOUBLE_SECTION; i++) {
   render(filmsSectionComponent.getElement(), new FilmsExtraListView(title[i]).getElement(), RenderPosition.BEFOREEND);
 }
 
-const siteExtraTopFilms = siteMainElement.querySelector(`.films-list--extra`).querySelector(`.films-list__container`);
+const siteExtraTopFilms = siteMainElement.querySelector(`.films-list--extra`);
+const siteExtraListContainer = siteExtraTopFilms.querySelector(`.films-list__container`);
 
 
 const getTopRatedFilms = (elem) => {
@@ -71,10 +70,10 @@ const getTopRatedFilms = (elem) => {
 };
 
 for (const item of getTopRatedFilms(films)) {
-  render(siteExtraTopFilms, new FilmsListElementView(item).getElement(), RenderPosition.BEFOREEND);
+  render(siteExtraListContainer, new FilmsListElementView(item).getElement(), RenderPosition.BEFOREEND);
 }
 
-const siteExtraMostFilms = siteMainElement.querySelector(`.films-list--extra:last-child`);
+const siteExtraMostFilms = filmsSectionComponent.getElement().querySelector(`.films-list--extra:last-child`);
 const extraFilmsContainer = siteExtraMostFilms.querySelector(`.films-list__container`);
 
 const getMostCommentedFilms = (elem) => {
@@ -93,8 +92,6 @@ const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
 
 render(siteFooterStatistics, new FilmsStatisticsView(films).getElement(), RenderPosition.BEFOREEND);
 
-const getPopup = () => document.querySelector(`.film-details`);
-
 const onEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     closePopup();
@@ -107,9 +104,13 @@ const onCloseButtonClick = (evt) => {
   }
 };
 
+const bodyTag = document.querySelector(`body`);
+
 const closePopup = function () {
-  if (getPopup()) {
-    getPopup().remove();
+
+  const popup = document.querySelector(`.film-details`);
+  if (popup) {
+    bodyTag.removeChild(popup);
   }
 
   document.removeEventListener(`keydown`, onEscPress);
@@ -117,21 +118,22 @@ const closePopup = function () {
 };
 
 const openPopup = (currentFilm) => {
-  debugger;
 
-  render(siteFooter, new FilmPopupView(currentFilm).getElement(), RenderPosition.AFTEREND);
+  const filmPopupComponent = new FilmPopupView(currentFilm);
 
-  const filmPopupCommentList = document.querySelector(`.film-details__comments-list`);
-  const filmGenreTable = document.querySelector(`.film-details__table`);
+  bodyTag.appendChild(filmPopupComponent.getElement());
 
-  currentFilm.comments.forEach((film) => render(filmPopupCommentList, new FilmCommentView(film).getElement(), RenderPosition.BEFOREEND));
+  // render(siteFooter, filmPopupComponent.getElement(), RenderPosition.AFTEREND);
 
-  render(filmGenreTable, new FilmGenresView(currentFilm).getElement());
-
+  const filmGenreTable = filmPopupComponent.getElement().querySelector(`.film-details__table tbody`);
   const filmTableRows = filmGenreTable.querySelectorAll(`.film-details__row`);
   const filmGenreRow = filmTableRows[filmTableRows.length - 1];
 
   currentFilm.genre.genres.forEach((film) => render(filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(film).getElement(), RenderPosition.BEFOREEND));
+
+  const filmPopupCommentList = filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
+
+  currentFilm.comments.forEach((film) => render(filmPopupCommentList, new FilmCommentView(film).getElement(), RenderPosition.BEFOREEND));
 
   document.addEventListener(`keydown`, onEscPress);
   document.addEventListener(`click`, onCloseButtonClick);

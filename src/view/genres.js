@@ -2,10 +2,8 @@ import {createElement} from "../utils.js";
 
 const createFilmGenres = (film) => {
   const {genre} = film;
-  return `<tr class="film-details__row">
-    <td class="film-details__term">${genre.title}</td>
-    <td class="film-details__cell"></td>
-    </tr>`;
+  return `<td class="film-details__term">${genre.title}</td>
+    <td class="film-details__cell"></td>`;
 };
 
 export default class FilmGenres {

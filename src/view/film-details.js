@@ -65,6 +65,10 @@ const createFilmDetailsTemplate = (film) => {
                 <td class="film-details__term">Country</td>
                 <td class="film-details__cell">${country}</td>
               </tr>
+              <tr class="film-details__row">
+                <td class="film-details__term">${genre.title}</td>
+                <td class="film-details__cell"></td>
+              </tr>
             </table>
 
             <p class="film-details__film-description">
