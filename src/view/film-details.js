@@ -1,7 +1,7 @@
 import {createElement} from "../utils.js";
 
 const createFilmDetailsTemplate = (film) => {
-  const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite} = film;
+  const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = film;
 
   const watchlistClassName = isWatchlist
     ? `checked`
@@ -15,7 +15,7 @@ const createFilmDetailsTemplate = (film) => {
     ? `checked`
     : ``;
 
-  return `<section class="film-details">
+  return `<section class="film-details" data-id="${id}">
     <form class="film-details__inner" action="" method="get">
       <div class="form-details__top-container">
         <div class="film-details__close">

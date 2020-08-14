@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomNumber, shuffleArray, getRandomizeInfo} from "../utils.js";
+import {getRandomInteger, getRandomNumber, shuffleArray, getRandomizeInfo, uniqueRandomInteger} from "../utils.js";
 import {MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT} from "../constants.js";
 
 const directors = [`Camden Derick`, `Finn Weys`, `Cemeron Case`, `Anthony Pull`, `Fill Blacke`];
@@ -122,6 +122,7 @@ export const generateFilmInfo = () => {
     country: getRandomizeInfo(countries),
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isHistory: Boolean(getRandomInteger(0, 1)),
-    isFavorite: Boolean(getRandomInteger(0, 1))
+    isFavorite: Boolean(getRandomInteger(0, 1)),
+    id: uniqueRandomInteger(0, 1000)
   };
 };

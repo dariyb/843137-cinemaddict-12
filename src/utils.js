@@ -63,3 +63,10 @@ export const getRandomizeInfo = (info) => {
   const randomIndex = getRandomInteger(0, info.length - 1);
   return info[randomIndex];
 };
+
+export const uniqueRandomInteger = (a = 0, b = 1000) => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+
+  return Math.floor(lower + Math.random() * (upper - lower + 1));
+};

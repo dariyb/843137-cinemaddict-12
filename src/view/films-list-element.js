@@ -2,7 +2,7 @@ import {createElement} from "../utils.js";
 
 const createSiteFilmsListElementTemplate = (film) => {
   const MAX_DESCRIPTION_LENGTH = 140;
-  const {poster, name, rating, releaseDate, runningTime, genre, description, comments, isWatchlist, isHistory, isFavorite} = film;
+  const {poster, name, rating, releaseDate, runningTime, genre, description, comments, isWatchlist, isHistory, isFavorite, id} = film;
 
   const reduction = (descText, maxLength) => {
     if (descText.length > maxLength) {
@@ -24,7 +24,7 @@ const createSiteFilmsListElementTemplate = (film) => {
     : ``;
 
 
-  return `<article class="film-card">
+  return `<article class="film-card" data-id="${id}">
       <h3 class="film-card__title">${name}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
