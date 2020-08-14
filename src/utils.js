@@ -63,3 +63,8 @@ export const getRandomizeInfo = (info) => {
   const randomIndex = getRandomInteger(0, info.length - 1);
   return info[randomIndex];
 };
+
+export const uniqueNumber = () => {
+  let i = 0;
+  return () => i++;
+};
