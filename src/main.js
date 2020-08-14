@@ -146,7 +146,7 @@ const openPopup = (currentFilm) => {
 };
 
 const findCard = (id) => {
-  const filmPopup = films.filter((film) => film.id === Number(id));
+  const filmPopup = films.find((film) => film.id === Number(id));
   return filmPopup;
 };
 
@@ -155,7 +155,7 @@ const cardFilmClickHandler = (evt) => {
   if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
     const popupId = event.target.dataset.id ? event.target.dataset.id : event.target.parentNode.dataset.id;
     const currentFilm = findCard(popupId);
-    openPopup(currentFilm[0]);
+    openPopup(currentFilm);
   }
 };
 
