@@ -153,7 +153,7 @@ const findCard = (id) => {
 const cardFilmClickHandler = (evt) => {
 
   if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
-    const popupId = event.target.dataset.id ? event.target.dataset.id : event.target.parentNode.dataset.id;
+    const popupId = event.target.parentNode.dataset.id;
     const currentFilm = findCard(popupId);
     openPopup(currentFilm);
   }
