@@ -1,4 +1,5 @@
-import {humanizeCommentDate, createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+import {humanizeCommentDate} from "../utils/film.js";
 
 const createFilmCommentTemplate = (film) => {
   const {text, author, date, emoji} = film;
@@ -22,21 +23,12 @@ const createFilmCommentTemplate = (film) => {
 </li>`;
 };
 
-export default class FilmComment {
+export default class FilmComment extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
   getTemplate() {
     return createFilmCommentTemplate(this._film);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

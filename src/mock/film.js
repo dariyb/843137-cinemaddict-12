@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomNumber, shuffleArray, getRandomizeInfo, uniqueNumber} from "../utils.js";
+import {getRandomInteger, getRandomNumber, shuffleArray, getRandomizeInfo, uniqueNumber} from "../utils/common.js";
 import {MIN_COMMENT_AMOUNT, MAX_COMMENT_AMOUNT} from "../constants.js";
 
 const directors = [`Camden Derick`, `Finn Weys`, `Cemeron Case`, `Anthony Pull`, `Fill Blacke`];
