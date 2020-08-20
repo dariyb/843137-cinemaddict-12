@@ -8,14 +8,14 @@ import NavigationView from "./view/navigation.js";
 // import FilmsListElementView from "./view/films-list-element.js";
 // import FilmsExtraListView from "./view/extra-list.js";
 // import ShowMoreButtonView from "./view/show-more-button.js";
-import FilmsStatisticsView from "./view/films-statistics.js";
-import FilmPopupView from "./view/film-details.js";
+// import FilmsStatisticsView from "./view/films-statistics.js";
+// import FilmPopupView from "./view/film-details.js";
 import {generateFilmInfo} from "./mock/film.js";
-import {FILM_COUNT, ESC_KEYCODE} from "./constants.js";
-import FilmCommentView from "./view/popup-comments.js";
-import FilmGenreView from "./view/genre.js";
+import {FILM_COUNT} from "./constants.js";
+// import FilmCommentView from "./view/popup-comments.js";
+// import FilmGenreView from "./view/genre.js";
 import {RenderPosition, render} from "./utils/render.js";
-import FilmsPresenter from "./presenter/films.js";
+import MovieListPresenter from "./presenter/films.js";
 
 const films = new Array(FILM_COUNT).fill().map(generateFilmInfo);
 
@@ -39,7 +39,7 @@ render(siteMainElement, new NavigationView(countWatchlist(films)), RenderPositio
 // const filmsListComponent = new FilmsListView();
 // const filmsListContainerComponent = new FilmsListContainerView();
 // const noFilmsList = new NoFilmsView();
-const filmsPresenter = new FilmsPresenter(siteMainElement);
+const movieListPresenter = new MovieListPresenter(siteMainElement);
 // render(siteMainElement, new SortView(), RenderPosition.BEFOREEND);
 
 // render(siteMainElement, filmsSectionComponent, RenderPosition.BEFOREEND);
@@ -98,75 +98,74 @@ const filmsPresenter = new FilmsPresenter(siteMainElement);
 // }
 
 
-filmsPresenter.init(films);
+movieListPresenter.init(films);
 
-const siteFooter = document.querySelector(`.footer`);
-const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
+// const siteFooter = document.querySelector(`.footer`);
+// const siteFooterStatistics = siteFooter.querySelector(`.footer__statistics`);
+//
+// render(siteFooterStatistics, new FilmsStatisticsView(films), RenderPosition.BEFOREEND);
 
-render(siteFooterStatistics, new FilmsStatisticsView(films), RenderPosition.BEFOREEND);
 
-
-const onEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    closePopup();
-  }
-};
-
-const onCloseButtonClick = (evt) => {
-  if (evt.target.classList.contains(`film-details__close-btn`)) {
-    closePopup();
-  }
-};
-
-const bodyTag = document.querySelector(`body`);
-
-const closePopup = function () {
-
-  const popup = document.querySelector(`.film-details`);
-  if (popup) {
-    bodyTag.removeChild(popup);
-  }
-
-  document.removeEventListener(`keydown`, onEscPress);
-  document.removeEventListener(`click`, onCloseButtonClick);
-};
-
-const openPopup = (currentFilm) => {
-
-  const filmPopupComponent = new FilmPopupView(currentFilm);
-
-  bodyTag.appendChild(filmPopupComponent);
-
-  const filmGenreTable = filmPopupComponent.querySelector(`.film-details__table tbody`);
-  const filmTableRows = filmGenreTable.querySelectorAll(`.film-details__row`);
-  const filmGenreRow = filmTableRows[filmTableRows.length - 1];
-
-  currentFilm.genre.genres.forEach((film) => render(filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(film), RenderPosition.BEFOREEND));
-
-  const filmPopupCommentList = filmPopupComponent.querySelector(`.film-details__comments-list`);
-
-  currentFilm.comments.forEach((film) => render(filmPopupCommentList, new FilmCommentView(film), RenderPosition.BEFOREEND));
-
-  document.addEventListener(`keydown`, onEscPress);
-  document.addEventListener(`click`, onCloseButtonClick);
-};
-
-const findCard = (id) => {
-  const filmPopup = films.find((film) => film.id === Number(id));
-  return filmPopup;
-};
-
-const cardFilmClickHandler = (evt) => {
-
-  if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
-    const popupId = event.target.parentNode.dataset.id;
-    const currentFilm = findCard(popupId);
-    openPopup(currentFilm);
-  }
-};
-
-debugger;
-filmsPresenter.onFilmsSectionClick(cardFilmClickHandler);
+// const onEscPress = function (evt) {
+//   if (evt.keyCode === ESC_KEYCODE) {
+//     closePopup();
+//   }
+// };
+//
+// const onCloseButtonClick = (evt) => {
+//   if (evt.target.classList.contains(`film-details__close-btn`)) {
+//     closePopup();
+//   }
+// };
+//
+// const bodyTag = document.querySelector(`body`);
+//
+// const closePopup = function () {
+//
+//   const popup = document.querySelector(`.film-details`);
+//   if (popup) {
+//     bodyTag.removeChild(popup);
+//   }
+//
+//   document.removeEventListener(`keydown`, onEscPress);
+//   document.removeEventListener(`click`, onCloseButtonClick);
+// };
+//
+// const openPopup = (currentFilm) => {
+//
+//   const filmPopupComponent = new FilmPopupView(currentFilm);
+//
+//   bodyTag.appendChild(filmPopupComponent);
+//
+//   const filmGenreTable = filmPopupComponent.querySelector(`.film-details__table tbody`);
+//   const filmTableRows = filmGenreTable.querySelectorAll(`.film-details__row`);
+//   const filmGenreRow = filmTableRows[filmTableRows.length - 1];
+//
+//   currentFilm.genre.genres.forEach((film) => render(filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(film), RenderPosition.BEFOREEND));
+//
+//   const filmPopupCommentList = filmPopupComponent.querySelector(`.film-details__comments-list`);
+//
+//   currentFilm.comments.forEach((film) => render(filmPopupCommentList, new FilmCommentView(film), RenderPosition.BEFOREEND));
+//
+//   document.addEventListener(`keydown`, onEscPress);
+//   document.addEventListener(`click`, onCloseButtonClick);
+// };
+//
+// const findCard = (id) => {
+//   const filmPopup = films.find((film) => film.id === Number(id));
+//   return filmPopup;
+// };
+//
+// const cardFilmClickHandler = (evt) => {
+//
+//   if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
+//     const popupId = event.target.parentNode.dataset.id;
+//     const currentFilm = findCard(popupId);
+//     openPopup(currentFilm);
+//   }
+// };
+//
+// filmsPresenter.onFilmsSectionClick(cardFilmClickHandler);
 
 
 // if (films.length > FILM_COUNT_PER_STEP) {
