@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+
 
 const createSiteFilmsSectionTemplate = () => {
   return (
@@ -6,20 +7,19 @@ const createSiteFilmsSectionTemplate = () => {
   );
 };
 
-export default class FilmsSection {
+export default class FilmsSection extends AbstractView {
   constructor() {
-    this._element = null;
+    super();
+    this._onFilmsSection = this._onFilmsSection.bind(this);
   }
   getTemplate() {
     return createSiteFilmsSectionTemplate();
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _onFilmsSection(evt) {
+    this._callback.filmsSectionClick(evt);
   }
-  removeElement() {
-    this._element = null;
+  onFilmsSectionClick(callback) {
+    this._callback.filmsSectionClick = callback;
+    this.getElement().addEventListener(`click`, this._onFilmsSection);
   }
 }

@@ -1,4 +1,4 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
 
 const createSiteFilmsListElementTemplate = (film) => {
   const MAX_DESCRIPTION_LENGTH = 140;
@@ -44,21 +44,12 @@ const createSiteFilmsListElementTemplate = (film) => {
   ;
 };
 
-export default class FilmsListElement {
+export default class FilmsListElement extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
   getTemplate() {
     return createSiteFilmsListElementTemplate(this._film);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }

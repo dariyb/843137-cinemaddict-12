@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+
 
 const createUserAccountTemplate = () => {
   return `<section class="header__profile profile">
@@ -7,20 +8,8 @@ const createUserAccountTemplate = () => {
     </section>`;
 };
 
-export default class UserAccount {
-  constructor() {
-    this._element = null;
-  }
+export default class UserAccount extends AbstractView {
   getTemplate() {
     return createUserAccountTemplate();
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }
