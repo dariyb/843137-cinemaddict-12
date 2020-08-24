@@ -66,7 +66,8 @@ export default class MovieList {
     // - Очищаем список
     this._clearFilmList();
     // - Рендерим список заново
-    this._renderFilms();
+    this._renderMainFilms();
+    this._renderShowMoreButton();
   }
   _renderSort() {
     // метод рендеринга для будущей сортировки
@@ -79,11 +80,16 @@ export default class MovieList {
 
     render(filmListElement, this._filmComponent, RenderPosition.BEFOREEND);
   }
-  _renderFilms() {
-    // по идее renderContent
+  _renderMainFilms() {
     for (let i = 0; i < Math.min(this._filmElements.length, FILM_COUNT_PER_STEP); i++) {
       this._renderFilm(this._filmsListContainerComponent, this._filmElements[i]);
     }
+  }
+  _renderFilms() {
+    // по идее renderContent
+    // for (let i = 0; i < Math.min(this._filmElements.length, FILM_COUNT_PER_STEP); i++) {
+    //   this._renderFilm(this._filmsListContainerComponent, this._filmElements[i]);
+    // }
     for (let i = 0; i < DOUBLE_SECTION; i++) {
       const title = [`Top rated`, `Most commented`];
       render(this._filmsSectionComponent, new FilmsExtraListView(title[i]), RenderPosition.BEFOREEND);
@@ -157,6 +163,7 @@ export default class MovieList {
     if (FILM_COUNT <= 0) {
       this._renderNoFilms();
     } else {
+      this._renderMainFilms();
       this._renderFilms();
     }
     this._renderSort();
