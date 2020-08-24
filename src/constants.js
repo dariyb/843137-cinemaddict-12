@@ -6,3 +6,9 @@ export const MOST_COMMENTED = 2;
 export const DOUBLE_SECTION = 2;
 export const MIN_COMMENT_AMOUNT = 0;
 export const MAX_COMMENT_AMOUNT = 5;
+
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date-up`,
+  RATING: `rating-up`
+};

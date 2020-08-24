@@ -50,7 +50,7 @@ const getRunningTime = () => {
   } else if (!hourRunningTime && !minuteRunningTime) {
     return `unknown`;
   }
-  return `${hourRunningTime}`;
+  return `${hourRunningTime}h`;
 };
 
 const getGenre = () => {
