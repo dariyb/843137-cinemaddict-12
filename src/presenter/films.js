@@ -7,7 +7,7 @@ import FilmsListElementView from "../view/films-list-element.js";
 import FilmsExtraListView from "../view/extra-list.js";
 import ShowMoreButtonView from "../view/show-more-button.js";
 import FilmPopupView from "../view/film-details.js";
-import {FILM_COUNT, TOP_RATED, MOST_COMMENTED, DOUBLE_SECTION, FILM_COUNT_PER_STEP, ESC_KEYCODE} from "../constants.js";
+import {TOP_RATED, MOST_COMMENTED, DOUBLE_SECTION, FILM_COUNT_PER_STEP, ESC_KEYCODE} from "../constants.js";
 import FilmCommentView from "../view/popup-comments.js";
 import FilmGenreView from "../view/genre.js";
 import FilmsStatisticsView from "../view/films-statistics.js";
@@ -160,7 +160,8 @@ export default class MovieList {
     this._renderTemplateedFilmCount = FILM_COUNT_PER_STEP;
   }
   _renderFilmsSection() {
-    if (FILM_COUNT <= 0) {
+    const filmsElementsLength = this._filmElements.length;
+    if (filmsElementsLength <= 0) {
       this._renderNoFilms();
     } else {
       this._renderMainFilms();
@@ -168,7 +169,7 @@ export default class MovieList {
     }
     this._renderSort();
 
-    if (this._filmElements.length > FILM_COUNT_PER_STEP) {
+    if (filmsElementsLength > FILM_COUNT_PER_STEP) {
       this._renderShowMoreButton();
     }
   }
