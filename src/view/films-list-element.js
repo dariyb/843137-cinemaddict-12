@@ -48,36 +48,8 @@ export default class FilmsListElement extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
-
-    this._onFavoriteButton = this._onFavoriteButton.bind(this);
-    this._onWatchListButton = this._onWatchListButton.bind(this);
-    this._onHistoryButton = this._onHistoryButton.bind(this);
   }
   getTemplate() {
     return createSiteFilmsListElementTemplate(this._film);
-  }
-  _onFavoriteButton(evt) {
-    evt.preventDefault();
-    this._callback.favoriteClick();
-  }
-  _onWatchListButton(evt) {
-    evt.preventDefault();
-    this._callback.watchListButton();
-  }
-  _onHistoryButton(evt) {
-    evt.preventDefault();
-    this._callback.historyButton();
-  }
-  onFavoriteButtonClick(callback) {
-    this._callback.favoriteClick = callback;
-    this.getElement().querySelector(`.film-card__controls-item--favorite`).addEventListener(`click`, this._onFavoriteButton);
-  }
-  onWatchListButtonClick(callback) {
-    this._callback.watchListButton = callback;
-    this.getElement().querySelector(`.film-card__controls-item--add-to-watchlist`).addEventListener(`click`, this._onWatchListButton);
-  }
-  onHistoryButtonClick(callback) {
-    this._callback.historyButton = callback;
-    this.getElement().querySelector(`.film-card__controls-item--mark-as-watched`).addEventListener(`click`, this._onHistoryButton);
   }
 }

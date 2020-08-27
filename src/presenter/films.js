@@ -19,7 +19,6 @@ export default class MovieList {
     this._filmsContainer = filmsContainer;
     this._renderTemplateedFilmCount = FILM_COUNT_PER_STEP;
     this._currentSortType = SortType.DEFAULT;
-    this._popupPresenter = {};
 
     this._filmsSectionComponent = new FilmsSectionView();
     this._filmsListComponent = new FilmsListView();
@@ -27,6 +26,7 @@ export default class MovieList {
     this._noFilmsList = new NoFilmsView();
     this._sortComponent = new SortView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
+    this._bodyTag = document.querySelector(`body`);
     this._siteFooter = document.querySelector(`.footer`);
 
     this._onFilmChange = this._onFilmChange.bind(this);
@@ -84,15 +84,8 @@ export default class MovieList {
     // текущая функция renderFilm
     this._filmComponent = new FilmsListElementView(film);
 
-    // this._onFavoriteClick = this._onFavoriteClick.bind(this);
-    // this._onWatchListClick = this._onWatchListClick.bind(this);
-    // this._onHistoryClick = this._onHistoryClick.bind(this);
-
     render(filmListElement, this._filmComponent, RenderPosition.BEFOREEND);
 
-    // this._filmComponent.onFavoriteButtonClick(this._onFavoriteClick);
-    // this._filmComponent.onWatchListButtonClick(this._onWatchListClick);
-    // this._filmComponent.onHistoryButtonClick(this._onHistoryClick);
   }
   _renderMainFilms() {
     for (let i = 0; i < Math.min(this._filmElements.length, FILM_COUNT_PER_STEP); i++) {
@@ -134,39 +127,6 @@ export default class MovieList {
       render(this._extraFilmsContainer, new FilmsListElementView(item), RenderPosition.BEFOREEND);
     }
   }
-  _onFavoriteClick() {
-    this._changeData(
-        Object.assign(
-            {},
-            this._currentFilm,
-            {
-              isFavorite: !this._currentFilm.isFavorite
-            }
-        )
-    );
-  }
-  _onWatchListClick() {
-    this._changeData(
-        Object.assign(
-            {},
-            this._currentFilm,
-            {
-              isWatchlist: !this._currentFilm.isWatchlist
-            }
-        )
-    );
-  }
-  _onHistoryClick() {
-    this._changeData(
-        Object.assign(
-            {},
-            this._currentFilm,
-            {
-              isHistory: !this._currentFilm.isHistory
-            }
-        )
-    );
-  }
   _renderNoFilms() {
     // рендеринг заглушки
     render(this._filmsListComponent, this._noFilmsList, RenderPosition.BEFOREEND);
@@ -188,10 +148,7 @@ export default class MovieList {
     this._showMoreButtonComponent.onButtonClick(this._onShowMoreButtonClick);
   }
   _clearFilmList() {
-    Object
-      .values(this._popupPresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._popupPresenter = {};
+    this._filmsListContainerComponent.getElement().innerHTML = ``;
     this._renderTemplateedFilmCount = FILM_COUNT_PER_STEP;
   }
   _renderFilmsSection() {
@@ -216,14 +173,14 @@ export default class MovieList {
       return this._filmPopup;
     };
 
-    const popupPresenter = new PopupPresenter();
+    const popupPresenter = new PopupPresenter(this._bodyTag);
 
     const cardFilmClickHandler = (evt) => {
       if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
         this._popupId = event.target.parentNode.dataset.id;
         this._currentFilm = findCard(this._popupId);
         popupPresenter.open(this._currentFilm);
-        this._popupPresenter[this._currentFilm.id] = popupPresenter;
+        // this._popupPresenter[this._currentFilm.id] = popupPresenter;
       }
     };
 
