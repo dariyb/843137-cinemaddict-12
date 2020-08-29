@@ -28,7 +28,7 @@ const createSiteFilmsListElementTemplate = (film) => {
       <h3 class="film-card__title">${name}</h3>
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${releaseDate}</span>
+        <span class="film-card__year">${releaseDate.getFullYear()}</span>
         <span class="film-card__duration">${runningTime}</span>
         <span class="film-card__genre">${genre.genres[0]}</span>
       </p>

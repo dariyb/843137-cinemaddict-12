@@ -26,7 +26,6 @@ export default class MovieList {
     this._filmsSectionComponent = new FilmsSectionView();
     this._filmsListComponent = new FilmsListView();
     this._filmsListContainerComponent = new FilmsListContainerView();
-    this._filmElementPresenter = new FilmElementPresenter();
     this._noFilmsList = new NoFilmsView();
     this._sortComponent = new SortView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
@@ -58,12 +57,10 @@ export default class MovieList {
 
     if (this._filmCards[updatedFilm.id]) {
       this._filmCards[updatedFilm.id].init(updatedFilm);
-    } else {
+    }
+    if (this._filmCardsExtra[updatedFilm.id]) {
       this._filmCardsExtra[updatedFilm.id].init(updatedFilm);
     }
-    // this._filmCards[updatedFilm.id].init(updatedFilm);
-    // this._filmCardsExtra[updatedFilm.id].init(updatedFilm);
-
     if (this._filmPopupCurrent) {
       this._filmPopupCurrent.init(updatedFilm);
     }
@@ -120,26 +117,12 @@ export default class MovieList {
     .sort((a, b) => a.comments.length > b.comments.length ? -1 : 1)
     .slice(0, MOST_COMMENTED);
   }
-  _renderFilm(filmListElement, film) {
+  _renderFilm(filmListElement, film, cardsList = this._filmCards) {
     // текущая функция renderFilm
     this._filmElementPresenter = new FilmElementPresenter(filmListElement, this._onFilmChange);
     this._filmElementPresenter.init(film);
-    this._filmCards[film.id] = this._filmElementPresenter;
-    console.log(this._filmCards[film.id]);
-    console.log(Object.assign(this._filmCards));
-
-    // if (Array.from(this._filmCards[film.id])) {
-    //   // this._filmCards[film.id] = this._filmElementPresenter;
-    //   this._filmCardsExtra[film.id] = this._filmElementPresenter;
-    //   console.log(this._filmCardsExtra[film.id] = this._filmElementPresenter);
-    // }
-    // this._filmCards[film.id] = this._filmElementPresenter;
+    cardsList[film.id] = this._filmElementPresenter;
   }
-  // _renderExtra(filmListExtraElement, filmExtra) {
-  //   this._filmElementPresenter = new FilmElementPresenter(filmListExtraElement, this._onFilmChange);
-  //   this._filmElementPresenter.init(filmExtra);
-  //   this._filmCardsExtra[filmExtra.id] = this._filmElementPresenter;
-  // }
   _renderMainFilms(from, to) {
     this._filmElements
       .slice(from, to)
@@ -156,14 +139,14 @@ export default class MovieList {
 
     this._getTopRatedFilms(this._filmElements)
       .slice()
-      .forEach((film) => this._renderFilm(this._siteExtraListContainer, film));
+      .forEach((film) => this._renderFilm(this._siteExtraListContainer, film, this._filmCardsExtra));
 
     this._siteExtraMostFilms = this._filmsContainer.querySelector(`.films-list--extra:last-child`);
     this._extraFilmsContainer = this._siteExtraMostFilms.querySelector(`.films-list__container`);
 
     this._getMostCommentedFilms(this._filmElements)
       .slice()
-      .forEach((film) => this._renderFilm(this._extraFilmsContainer, film));
+      .forEach((film) => this._renderFilm(this._extraFilmsContainer, film, this._filmCardsExtra));
   }
   _renderNoFilms() {
     // рендеринг заглушки

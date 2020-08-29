@@ -32,6 +32,7 @@ export default class Popup {
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);
     this._filmPopupComponent.onHistoryPopupClick(this._onHistoryPopup);
+    // this._filmPopupComponent.onEmojiPopupClick();
 
     if (prevFilmComponent === null) {
       this._filmPopupContainer.appendChild(this._filmPopupComponent.getElement());

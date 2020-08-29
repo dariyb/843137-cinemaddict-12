@@ -1,5 +1,17 @@
-export const humanizeCommentDate = (dueDate) => {
-  return dueDate.toLocaleString(`en-US`, {year: `numeric`, month: `numeric`, day: `numeric`, hour: `numeric`, minute: `numeric`, hour12: false});
+import moment from 'moment';
+
+export const DatePlace = {
+  POPUPDATE: `film release`,
+  COMMENTDATE: `comment date`
+};
+export const convertDate = (date, place) => {
+  switch (place) {
+    case DatePlace.POPUPDATE:
+      return moment(date).format(`DD MMM YYYY`);
+    case DatePlace.COMMENTDATE:
+      return moment(date).format(`YYYY/MM/DD HH:mm`);
+  }
+  throw new Error(`This is not the right format`);
 };
 
 export const sortFilmDateUp = (filmA, filmB) => {

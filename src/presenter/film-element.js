@@ -1,4 +1,5 @@
 import FilmsListElementView from "../view/films-list-element.js";
+import Abstract from "../view/abstract.js";
 import {RenderPosition, render, remove, replace} from "../utils/render.js";
 
 export default class FilmElement {
@@ -26,7 +27,10 @@ export default class FilmElement {
       render(this._container, this._filmComponent, RenderPosition.BEFOREEND);
       return;
     }
-    if (this._container.getElement().contains(prevFilmComponent.getElement())) {
+    if (this._container instanceof Abstract) {
+      this._container = this._container.getElement();
+    }
+    if (this._container.contains(prevFilmComponent.getElement())) {
       replace(this._filmComponent, prevFilmComponent);
     }
     remove(prevFilmComponent);
