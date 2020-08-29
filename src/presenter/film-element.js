@@ -1,7 +1,5 @@
 import FilmsListElementView from "../view/films-list-element.js";
-import FilmsExtraListView from "../view/extra-list.js";
 import {RenderPosition, render, remove, replace} from "../utils/render.js";
-import {TOP_RATED, MOST_COMMENTED, DOUBLE_SECTION} from "../constants.js";
 
 export default class FilmElement {
   constructor(container, changeData) {
@@ -35,45 +33,6 @@ export default class FilmElement {
   }
   destroy() {
     remove(this._filmComponent);
-  }
-  renderFilms(mainContainer, sectionContainer, films) {
-    // по идее renderContent
-    this._mainContainer = mainContainer;
-    this._sectionContainer = sectionContainer;
-    this._films = films;
-
-    for (let i = 0; i < DOUBLE_SECTION; i++) {
-      const title = [`Top rated`, `Most commented`];
-      render(this._sectionContainer, new FilmsExtraListView(title[i]), RenderPosition.BEFOREEND);
-    }
-
-    this._siteExtraTopFilms = this._mainContainer.querySelector(`.films-list--extra`);
-    this._siteExtraListContainer = this._siteExtraTopFilms.querySelector(`.films-list__container`);
-
-    const getTopRatedFilms = (elem) => {
-      return elem
-      .slice()
-      .sort((a, b) => a.rating > b.rating ? -1 : 1)
-      .slice(0, TOP_RATED);
-    };
-
-    for (const item of getTopRatedFilms(this._films)) {
-      render(this._siteExtraListContainer, new FilmsListElementView(item), RenderPosition.BEFOREEND);
-    }
-
-    this._siteExtraMostFilms = this._mainContainer.querySelector(`.films-list--extra:last-child`);
-    this._extraFilmsContainer = this._siteExtraMostFilms.querySelector(`.films-list__container`);
-
-    const getMostCommentedFilms = (elem) => {
-      return elem
-      .slice()
-      .sort((a, b) => a.comments.length > b.comments.length ? -1 : 1)
-      .slice(0, MOST_COMMENTED);
-    };
-
-    for (const item of getMostCommentedFilms(this._films)) {
-      render(this._extraFilmsContainer, new FilmsListElementView(item), RenderPosition.BEFOREEND);
-    }
   }
   _onFavoriteClick() {
     this._changeData(

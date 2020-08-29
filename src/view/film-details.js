@@ -1,4 +1,7 @@
 import AbstractView from "./abstract.js";
+import FilmCommentView from "../view/popup-comments.js";
+import FilmGenreView from "../view/genre.js";
+import {RenderPosition, render, createElement} from "../utils/render.js";
 
 const createFilmDetailsTemplate = (film) => {
   const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = film;
@@ -141,6 +144,26 @@ export default class FilmPopup extends AbstractView {
   }
   getTemplate() {
     return createFilmDetailsTemplate(this._film);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+      this._renderGenre(this._element);
+      this._renderComments(this._element);
+    }
+    return this._element;
+  }
+  _renderGenre(element) {
+    this._filmGenreTable = element.querySelector(`.film-details__table tbody`);
+    this._filmTableRows = this._filmGenreTable.querySelectorAll(`.film-details__row`);
+    this._filmGenreRow = this._filmTableRows[this._filmTableRows.length - 1];
+
+    this._film.genre.genres.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
+  }
+  _renderComments(element) {
+    this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
+
+    this._film.comments.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
   }
   _onFavoritePopupButton(evt) {
     evt.preventDefault();

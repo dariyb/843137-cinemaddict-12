@@ -1,13 +1,12 @@
 import FilmPopupView from "../view/film-details.js";
-import FilmCommentView from "../view/popup-comments.js";
-import FilmGenreView from "../view/genre.js";
 import {ESC_KEYCODE} from "../constants.js";
-import {RenderPosition, render, remove, replace} from "../utils/render.js";
+import {remove, replace} from "../utils/render.js";
 
 export default class Popup {
-  constructor(filmPopupContainer, changePopupData) {
+  constructor(filmPopupContainer, changePopupData, close) {
     this._filmPopupContainer = filmPopupContainer;
     this._changePopupData = changePopupData;
+    this.close = close;
 
     this._filmPopupComponent = null;
 
@@ -20,7 +19,7 @@ export default class Popup {
     this._closePopup = this._closePopup.bind(this);
 
   }
-  open(currentFilm) {
+  init(currentFilm) {
     document.addEventListener(`keydown`, this._onEscPress);
     document.addEventListener(`click`, this._onCloseButtonClick);
 
@@ -33,16 +32,6 @@ export default class Popup {
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);
     this._filmPopupComponent.onHistoryPopupClick(this._onHistoryPopup);
-
-    this._filmGenreTable = this._filmPopupComponent.getElement().querySelector(`.film-details__table tbody`);
-    this._filmTableRows = this._filmGenreTable.querySelectorAll(`.film-details__row`);
-    this._filmGenreRow = this._filmTableRows[this._filmTableRows.length - 1];
-
-    currentFilm.genre.genres.forEach((film) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(film), RenderPosition.BEFOREEND));
-
-    this._filmPopupCommentList = this._filmPopupComponent.getElement().querySelector(`.film-details__comments-list`);
-
-    currentFilm.comments.forEach((film) => render(this._filmPopupCommentList, new FilmCommentView(film), RenderPosition.BEFOREEND));
 
     if (prevFilmComponent === null) {
       this._filmPopupContainer.appendChild(this._filmPopupComponent.getElement());
@@ -64,6 +53,9 @@ export default class Popup {
     }
   }
   _closePopup() {
+    this.close();
+  }
+  removePopup() {
     this._popup = document.querySelector(`.film-details`);
     if (this._popup) {
       this._filmPopupContainer.removeChild(this._popup);

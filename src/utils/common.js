@@ -47,12 +47,3 @@ export const updateItem = (films, update) => {
     ...films.slice(index + 1)
   ];
 };
-
-export const updatePopup = (film, update) => {
-  const index = film.id === update.id;
-
-  if (index === -1) {
-    return film;
-  }
-  return update;
-};
