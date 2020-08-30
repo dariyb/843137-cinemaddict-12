@@ -1,11 +1,11 @@
 import AbstractView from "./abstract.js";
-import {humanizeCommentDate} from "../utils/film.js";
+import {convertDate} from "../utils/film.js";
 
 const createFilmCommentTemplate = (film) => {
   const {text, author, date, emoji} = film;
 
   const humDate = date !== null
-    ? humanizeCommentDate(date)
+    ? convertDate(date, `comment date`)
     : ` `;
 
   return `<li class="film-details__comment">

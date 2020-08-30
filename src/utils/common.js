@@ -34,3 +34,16 @@ export const uniqueNumber = () => {
   let i = 0;
   return () => i++;
 };
+
+export const updateItem = (films, update) => {
+  const index = films.findIndex((film) => film.id === update.id);
+
+  if (index === -1) {
+    return films;
+  }
+  return [
+    ...films.slice(0, index),
+    update,
+    ...films.slice(index + 1)
+  ];
+};

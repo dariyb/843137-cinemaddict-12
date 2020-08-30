@@ -12,3 +12,5 @@ export const SortType = {
   DATE: `date-up`,
   RATING: `rating-up`
 };
+
+export const EMOJIES = [`smile.png`, `sleeping.png`, `puke.png`, `angry.png`];
