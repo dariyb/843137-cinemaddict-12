@@ -5,7 +5,6 @@ const directors = [`Camden Derick`, `Finn Weys`, `Cemeron Case`, `Anthony Pull`,
 const filmsNames = [`Blade`, `Titanic`, `Taxi`, `My soul to take`, `Harry Potter`, `You are next`, `Hangover`];
 const posters = [`made-for-each-other.png`, `popeye-meets-sinbad.png`, `sagebrush-trail.jpg`, `santa-claus-conquers-the-martians.jpg`, `the-dance-of-life.jpg`, `the-great-flamarion.jpg`, `the-man-with-the-golden-arm.jpg`];
 const texts = [`Cried a river`, `WTF`, `LOL`, `Best thing EVER`, `Do NOT Recommend`, `Wish I was there`, `AMAZING!!!`];
-// const emojies = [`smile.png`, `sleeping.png`, `puke.png`, `angry.png`];
 const authors = [`Jonny Cash`, `David Bowie`, `Incognito`, `Lucky Charly`, `Filmo-guru`, `Stella Prize`, `Marry Jo`];
 const actors = [[`Ricj Pass`, `Vin Disel`, `Caty Holms`, `Abel Plancoff`, `Will Smith`], [`Peter Weid`, `Dexter Asque`, `Heis Bun`], [`Lester Kess`, `Jojo Wilson`, `Nick Newman`, `Oleg Petrov`]];
 const writers = [[`Eric Growe`, `Deton Ber`, `Camore Dotel`, `Firect Acew`], [`Wong Er`, `Owen Bas`, `Kein Cain`, `JJ Abrams`], [`Gregory Unnit`, `Quin Delpot`, `Wein Woss`, `Meme Vick`]];
@@ -124,7 +123,6 @@ export const generateFilmInfo = () => {
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isHistory: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1)),
-    id: getId(),
-    emoji: getRandomizeInfo(EMOJIES)
+    id: getId()
   };
 };

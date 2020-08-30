@@ -1,13 +1,13 @@
-import AbstractView from "./abstract.js";
-// import SmartView from "./abstract.js";
+// import AbstractView from "./abstract.js";
+import SmartView from "./smart.js";
 import FilmCommentView from "../view/popup-comments.js";
 import FilmGenreView from "../view/genre.js";
 import {EMOJIES} from "../constants.js";
 import {RenderPosition, render, createElement} from "../utils/render.js";
 import {convertDate} from "../utils/film.js";
 
-const getEmoji = () => {
-  return EMOJIES.map((emoji) =>`<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.split(`.`)[0]}" value="${emoji.split(`.`)[0]}">
+const getEmoji = (currentEmoji) => {
+  return EMOJIES.map((emoji) =>`<input class="film-details__emoji-item visually-hidden" name="comment-emoji" type="radio" id="emoji-${emoji.split(`.`)[0]}" value="${emoji.split(`.`)[0]}" ${emoji.split(`.`)[0] === currentEmoji ? `checked` : ``}>
   <label class="film-details__emoji-label" for="emoji-${emoji.split(`.`)[0]}">
     <img src="./images/emoji/${emoji}" width="30" height="30" alt="emoji" data-emoji="${emoji.split(`.`)[0]}">
   </label>
@@ -21,7 +21,7 @@ const insertChosenEmoji = (chosenEmoji) => {
 const createFilmDetailsTemplate = (data, emoji) => {
   const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = data;
 
-  const emojiTemplate = getEmoji();
+  const emojiTemplate = getEmoji(emoji);
 
   const fullReleaseDate = releaseDate !== null
     ? convertDate(releaseDate, `film release`)
@@ -138,7 +138,7 @@ const createFilmDetailsTemplate = (data, emoji) => {
   </section>`;
 };
 
-export default class FilmPopup extends AbstractView {
+export default class FilmPopup extends SmartView {
   constructor(data) {
     super();
     this._data = data;
@@ -162,30 +162,8 @@ export default class FilmPopup extends AbstractView {
     }
     return this._element;
   }
-  updateData(update) {
-    if (!update) {
-      return;
-    }
-
-    this._data = Object.assign(
-        {},
-        this._data,
-        update
-    );
-
-    this.updateElement();
-  }
-  updateElement() {
-    let prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, prevElement);
-    prevElement = null;
-
-    this.restoreHandlers();
+  reset() {
+    // здесь возможно будет сброс текста комментариев и эмодзи в будущем~
   }
   _onInnerButtonsClick() {
     this.getElement()
