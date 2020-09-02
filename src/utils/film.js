@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 export const DatePlace = {
   POPUPDATE: `film release`,
@@ -7,7 +7,7 @@ export const DatePlace = {
 export const convertDate = (date, place) => {
   switch (place) {
     case DatePlace.POPUPDATE:
-      return moment(date).format(`DD MMM YYYY`);
+      return moment(date).format(`DD MMMM YYYY`);
     case DatePlace.COMMENTDATE:
       return moment(date).format(`YYYY/MM/DD HH:mm`);
   }
