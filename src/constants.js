@@ -14,3 +14,21 @@ export const SortType = {
 };
 
 export const EMOJIES = [`smile.png`, `sleeping.png`, `puke.png`, `angry.png`];
+
+export const UserAction = {
+  UPDATE_FILM_INFO: `UPDATE_FILM_INFO`,
+  ADD_COMMENT: `ADD_COMMENT`,
+  DELETE_COMMENT: `DELETE_COMMENT`
+};
+
+export const UpdateType = {
+  MINOR: `MINOR`,
+  MAJOR: `MAJOR`
+};
+
+export const FilterType = {
+  ALL: `All Movies`,
+  WATCHLIST: `Watchlist`,
+  HISTORY: `History`,
+  FAVORITES: `Favorites`
+};

@@ -1,6 +1,7 @@
 import FilmPopupView from "../view/film-details.js";
 import {ESC_KEYCODE} from "../constants.js";
 import {remove, replace} from "../utils/render.js";
+import {UserAction, UpdateType} from "../constants.js";
 
 export default class Popup {
   constructor(filmPopupContainer, changePopupData, close) {
@@ -18,8 +19,11 @@ export default class Popup {
     this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
     this._closePopup = this._closePopup.bind(this);
 
+    // this._onDeleteCommentClick = this._onDeleteCommentClick.bind(this);
+
   }
   init(currentFilm) {
+
     document.addEventListener(`keydown`, this._onEscPress);
     document.addEventListener(`click`, this._onCloseButtonClick);
 
@@ -32,6 +36,8 @@ export default class Popup {
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);
     this._filmPopupComponent.onHistoryPopupClick(this._onHistoryPopup);
+
+    // this._filmPopupComponent.onDeleteClick(this._onDeleteCommentClick);
     // this._filmPopupComponent.onEmojiPopupClick();
 
     if (prevFilmComponent === null) {
@@ -67,6 +73,8 @@ export default class Popup {
   }
   _onFavoritePopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -78,6 +86,8 @@ export default class Popup {
   }
   _onWatchlistPopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -89,6 +99,8 @@ export default class Popup {
   }
   _onHistoryPopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -98,4 +110,23 @@ export default class Popup {
         )
     );
   }
+  // _onDeleteCommentClick(currentFilm) {
+  //   this._changePopupData(
+  //       UserAction.DELETE_COMMENT,
+  //       UpdateType.MINOR,
+  //       currentFilm
+  //   );
+  //   // const mainComments = this._currentFilm.comments.filter((comment) => comment.evt.target);
+  //   // this._changePopupData(
+  //   //     UserAction.DELETE_COMMENT,
+  //   //     UpdateType.MINOR,
+  //   //     Object.assign(
+  //   //         {},
+  //   //         this._currentFilm,
+  //   //         {
+  //   //           comments: mainComments.slice()
+  //   //         }
+  //   //     )
+  //   // );
+  // }
 }

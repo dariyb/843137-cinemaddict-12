@@ -1,6 +1,7 @@
 import FilmsListElementView from "../view/films-list-element.js";
 import Abstract from "../view/abstract.js";
 import {RenderPosition, render, remove, replace} from "../utils/render.js";
+import {UserAction, UpdateType} from "../constants.js";
 
 export default class FilmElement {
   constructor(container, changeData) {
@@ -40,6 +41,8 @@ export default class FilmElement {
   }
   _onFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -51,6 +54,8 @@ export default class FilmElement {
   }
   _onWatchlistClick() {
     this._changeData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,
@@ -62,6 +67,8 @@ export default class FilmElement {
   }
   _onHistoryClick() {
     this._changeData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._film,

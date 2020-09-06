@@ -3,7 +3,7 @@ import SmartView from "./smart.js";
 import FilmCommentView from "../view/popup-comments.js";
 import FilmGenreView from "../view/genre.js";
 import {EMOJIES} from "../constants.js";
-import {RenderPosition, render, createElement} from "../utils/render.js";
+import {RenderPosition, render, createElement, remove} from "../utils/render.js";
 import {convertDate} from "../utils/film.js";
 
 const getEmoji = (currentEmoji) => {
@@ -148,6 +148,9 @@ export default class FilmPopup extends SmartView {
     this._onWatchlistPopupButton = this._onWatchlistPopupButton.bind(this);
     this._onHistoryPopupButton = this._onHistoryPopupButton.bind(this);
     this._onEmojiClick = this._onEmojiClick.bind(this);
+
+    // this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
+
     this._onInnerButtonsClick();
 
   }
@@ -169,6 +172,9 @@ export default class FilmPopup extends SmartView {
     this.getElement()
     .querySelectorAll(`.film-details__emoji-label`)
     .forEach((emoji) => emoji.addEventListener(`click`, this._onEmojiClick));
+    // this.getElement()
+    // .querySelectorAll(`.film-details__comment-delete`)
+    // .forEach((comment) => comment.addEventListener(`click`, this._onDeleteButtonClick));
   }
   restoreHandlers() {
     this._onInnerButtonsClick();
@@ -196,6 +202,11 @@ export default class FilmPopup extends SmartView {
     this._chosenEmoji(evt.target.dataset.emoji);
     this.updateElement();
   }
+  // _onDeleteButtonClick(evt) {
+  //   evt.preventDefault();
+  //   this._commentButton = event.target.parentNode.parentNode.parentNode;
+  //   this._filmPopupCommentList.removeChild(this._commentButton);
+  // }
   _onFavoritePopupButton(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();

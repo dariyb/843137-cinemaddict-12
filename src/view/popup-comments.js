@@ -8,6 +8,7 @@ const createFilmCommentTemplate = (film) => {
     ? convertDate(date, `comment date`)
     : ` `;
 
+
   return `<li class="film-details__comment">
   <span class="film-details__comment-emoji">
     <img src="${emoji}" width="55" height="55" alt="emoji-smile">
@@ -24,11 +25,20 @@ const createFilmCommentTemplate = (film) => {
 };
 
 export default class FilmComment extends AbstractView {
-  constructor(film) {
+  constructor(comment) {
     super();
-    this._film = film;
+    this._comment = comment;
+
+    // this._onDeleteClick = this._onDeleteClick.bind(this);
+
   }
   getTemplate() {
-    return createFilmCommentTemplate(this._film);
+    return createFilmCommentTemplate(this._comment);
   }
+  // _onDeleteClick(evt) {
+  //   evt.preventDefault();
+  //   this._commentButton = evt.target;
+  //   remove(this.getElement());
+  //   console.log(this.getElement());
+  // }
 }
