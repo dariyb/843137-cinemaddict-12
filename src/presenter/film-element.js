@@ -42,7 +42,7 @@ export default class FilmElement {
   _onFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -55,7 +55,7 @@ export default class FilmElement {
   _onWatchlistClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -68,7 +68,7 @@ export default class FilmElement {
   _onHistoryClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,

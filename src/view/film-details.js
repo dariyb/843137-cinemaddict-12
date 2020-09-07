@@ -1,9 +1,8 @@
-// import AbstractView from "./abstract.js";
 import SmartView from "./smart.js";
 import FilmCommentView from "../view/popup-comments.js";
 import FilmGenreView from "../view/genre.js";
 import {EMOJIES} from "../constants.js";
-import {RenderPosition, render, createElement, remove} from "../utils/render.js";
+import {RenderPosition, render, createElement} from "../utils/render.js";
 import {convertDate} from "../utils/film.js";
 
 const getEmoji = (currentEmoji) => {
@@ -18,7 +17,7 @@ const insertChosenEmoji = (chosenEmoji) => {
   return `<img src="./images/emoji/${chosenEmoji}.png" width="55" height="55" alt="emoji">`;
 };
 
-const createFilmDetailsTemplate = (data, emoji) => {
+const createFilmDetailsTemplate = (data, emoji, message) => {
   const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = data;
 
   const emojiTemplate = getEmoji(emoji);
@@ -125,7 +124,7 @@ const createFilmDetailsTemplate = (data, emoji) => {
             </div>
 
             <label class="film-details__comment-label">
-              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
+              <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${message ? message : ``}</textarea>
             </label>
 
             <div class="film-details__emoji-list">
@@ -143,19 +142,23 @@ export default class FilmPopup extends SmartView {
     super();
     this._data = data;
     this._emoji = null;
+    this._comment = null;
+    this._userMessage = null;
 
     this._onFavoritePopupButton = this._onFavoritePopupButton.bind(this);
     this._onWatchlistPopupButton = this._onWatchlistPopupButton.bind(this);
     this._onHistoryPopupButton = this._onHistoryPopupButton.bind(this);
     this._onEmojiClick = this._onEmojiClick.bind(this);
 
-    // this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
+    this._onTextInput = this._onTextInput.bind(this);
+
+    this._onDeleteButton = this._onDeleteButton.bind(this);
 
     this._onInnerButtonsClick();
 
   }
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._emoji);
+    return createFilmDetailsTemplate(this._data, this._emoji, this._userMessage);
   }
   getElement() {
     if (!this._element) {
@@ -165,18 +168,26 @@ export default class FilmPopup extends SmartView {
     }
     return this._element;
   }
+  removeElement() {
+    super.removeElement();
+  }
   reset() {
     // здесь возможно будет сброс текста комментариев и эмодзи в будущем~
+  }
+  getMessage() {
+    this._userMessage = this.getElement()
+    .querySelector(`.film-details__comment-input`).value;
+    return this._userMessage ? this._userMessage : ``;
   }
   _onInnerButtonsClick() {
     this.getElement()
     .querySelectorAll(`.film-details__emoji-label`)
     .forEach((emoji) => emoji.addEventListener(`click`, this._onEmojiClick));
-    // this.getElement()
-    // .querySelectorAll(`.film-details__comment-delete`)
-    // .forEach((comment) => comment.addEventListener(`click`, this._onDeleteButtonClick));
+    this.getElement()
+    .querySelector(`.film-details__comment-input`)
+    .addEventListener(`input`, this._onTextInput);
   }
-  restoreHandlers() {
+  onRestore() {
     this._onInnerButtonsClick();
     this.onFavoritePopupClick(this._callback.favoriteClick);
     this.onWatchlistPopupClick(this._callback.watchlistClick);
@@ -202,11 +213,26 @@ export default class FilmPopup extends SmartView {
     this._chosenEmoji(evt.target.dataset.emoji);
     this.updateElement();
   }
-  // _onDeleteButtonClick(evt) {
-  //   evt.preventDefault();
-  //   this._commentButton = event.target.parentNode.parentNode.parentNode;
-  //   this._filmPopupCommentList.removeChild(this._commentButton);
-  // }
+  _chosenComment(comment) {
+    this._comment = comment;
+  }
+  onDeleteButtonClick(callback) {
+    this._callback.deleteButtonClick = callback;
+    this.getElement()
+      .querySelectorAll(`.film-details__comment-delete`)
+      .forEach((element) => element.addEventListener(`click`, this._onDeleteButton));
+  }
+  _onDeleteButton(evt) {
+    evt.preventDefault();
+    this._callback.deleteButtonClick(evt.target.dataset.id);
+  }
+  _onTextInput(evt) {
+    evt.preventDefault();
+    this._userMessage = evt.target.value;
+  }
+  onSendKeysPress(callback) {
+    this._callback.savePress = callback;
+  }
   _onFavoritePopupButton(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();

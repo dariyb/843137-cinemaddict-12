@@ -100,7 +100,8 @@ const getComments = () => {
     text: getRandomizeInfo(texts),
     emoji: `./images/emoji/${getRandomizeInfo(EMOJIES)}`,
     author: getRandomizeInfo(authors),
-    date: generateCommentDate()
+    date: generateCommentDate(),
+    id: getId()
   };
 };
 

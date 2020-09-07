@@ -46,16 +46,6 @@ export default class Filter {
   _getFilters() {
     const films = this._moviesModel.getFilms();
 
-    // const countWatchlist = (added) => {
-    //   const filmListNew = {
-    //     all: 0,
-    //     watchlist: added.filter((index) => index.isWatchlist === true),
-    //     favorite: added.filter((index) => index.isFavorite === true),
-    //     history: added.filter((index) => index.isHistory === true),
-    //   };
-    //   return filmListNew;
-    // };
-
     return [
       {
         type: FilterType.ALL,

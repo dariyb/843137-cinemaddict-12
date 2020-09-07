@@ -15,7 +15,27 @@ export default class Movies extends Observer {
     const index = this._films.findIndex((film) => film.id === update.id);
 
     if (index === -1) {
-      throw new Error(`Cannot update unexisting film`);
+      throw new Error(`Can't update unexisting film`);
+    }
+    this._films = [
+      ...this._films.slice(0, index),
+      update,
+      ...this._films.slice(index + 1)
+    ];
+    this._notify(updateType, update);
+  }
+  addComment(updateType, update) {
+    this._films = [
+      update,
+      ...this._films
+    ];
+    this._notify(updateType, update);
+  }
+  deleteComment(updateType, update) {
+    const index = this._films.findIndex((film) => film.id === update.id);
+
+    if (index === -1) {
+      throw new Error(`Can't update unexisting film`);
     }
     this._films = [
       ...this._films.slice(0, index),
