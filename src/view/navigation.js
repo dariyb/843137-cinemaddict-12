@@ -34,7 +34,9 @@ export default class Navigation extends AbstractView {
   }
   _onFilterChange(evt) {
     evt.preventDefault();
-    this._callback.filterTypeChange(evt.target.dataset.id);
+    if (evt.target.dataset.id) {
+      this._callback.filterTypeChange(evt.target.dataset.id);
+    }
   }
   onFilterTypeChange(callback) {
     this._callback.filterTypeChange = callback;

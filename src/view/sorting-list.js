@@ -22,20 +22,20 @@ export default class Sort extends AbstractView {
     return createSiteSortingListTemplate(this._currentSortType);
   }
   _sortTypeChangeClick(evt) {
-    if (evt.target.tagName !== `A` || evt.target === this._currentSortType) {
+    if (evt.target.tagName !== `A`) {
       return;
     }
     evt.preventDefault();
-    evt.target.classList.add(`sort__button--active`);
-
-    this._currentSortType.classList.remove(`sort__button--active`);
-    this._currentSortType = evt.target;
+    // evt.target.classList.add(`sort__button--active`);
+    //
+    // this._currentSortType.classList.remove(`sort__button--active`);
+    // this._currentSortType = evt.target;
 
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
   onSortTypeClick(callback) {
     this._callback.sortTypeChange = callback;
-    this._currentSortType = this.getElement().querySelector(`a:first-child`);
+    // this._currentSortType = this.getElement().querySelector(`a:first-child`);
     this.getElement().addEventListener(`click`, this._sortTypeChangeClick);
   }
 }

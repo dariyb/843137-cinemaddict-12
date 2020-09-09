@@ -1,6 +1,6 @@
 import FilmPopupView from "../view/film-details.js";
 import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
-import {uniqueNumber} from "../utils/common.js";
+import {generateId} from "../utils/common.js";
 import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
@@ -77,7 +77,7 @@ export default class Popup {
   _onFavoritePopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -90,7 +90,7 @@ export default class Popup {
   _onWatchlistPopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -103,7 +103,7 @@ export default class Popup {
   _onHistoryPopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -117,7 +117,7 @@ export default class Popup {
     const newComments = this._currentFilm.comments.filter((comment) => comment.id !== parseInt(commentId, 10));
     this._changePopupData(
         UserAction.DELETE_COMMENT,
-        UpdateType.PATCH,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -134,7 +134,7 @@ export default class Popup {
 
       if (chosenEmoji && insertedText) {
         const newUserComment = {
-          id: uniqueNumber(),
+          id: generateId(),
           text: insertedText,
           emoji: `./images/emoji/${chosenEmoji}.png`,
           author: `RandomPerson`,
@@ -144,7 +144,7 @@ export default class Popup {
         newComments.push(newUserComment);
         this._changePopupData(
             UserAction.ADD_COMMENT,
-            UpdateType.PATCH,
+            UpdateType.MINOR,
             Object.assign(
                 {},
                 this._currentFilm,

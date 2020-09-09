@@ -60,7 +60,7 @@ export default class MovieList {
   }
   _getMovies() {
     const filterType = this._filterModel.getFilter();
-    const films = this._moviesModel.getFilms();
+    const films = this._moviesModel.getFilms().slice();
     const filteredMovies = filter[filterType](films);
 
     switch (this._currentSortType) {
@@ -77,10 +77,10 @@ export default class MovieList {
         this._moviesModel.updateFilm(updateType, update);
         break;
       case UserAction.ADD_COMMENT:
-        this._moviesModel.addComment(updateType, update);
+        this._moviesModel.updateFilm(updateType, update);
         break;
       case UserAction.DELETE_COMMENT:
-        this._moviesModel.deleteComment(updateType, update);
+        this._moviesModel.updateFilm(updateType, update);
     }
   }
   _onModelEvent(updateType, data) {
