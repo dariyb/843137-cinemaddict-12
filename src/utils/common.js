@@ -35,15 +35,4 @@ export const uniqueNumber = () => {
   return () => i++;
 };
 
-export const updateItem = (films, update) => {
-  const index = films.findIndex((film) => film.id === update.id);
-
-  if (index === -1) {
-    return films;
-  }
-  return [
-    ...films.slice(0, index),
-    update,
-    ...films.slice(index + 1)
-  ];
-};
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);

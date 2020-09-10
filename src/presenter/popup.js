@@ -1,6 +1,8 @@
 import FilmPopupView from "../view/film-details.js";
-import {ESC_KEYCODE} from "../constants.js";
+import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
+import {generateId} from "../utils/common.js";
 import {remove, replace} from "../utils/render.js";
+import {UserAction, UpdateType} from "../constants.js";
 
 export default class Popup {
   constructor(filmPopupContainer, changePopupData, close) {
@@ -14,14 +16,19 @@ export default class Popup {
     this._onWatchlistPopup = this._onWatchlistPopup.bind(this);
     this._onHistoryPopup = this._onHistoryPopup.bind(this);
 
+    this._onDeleteComment = this._onDeleteComment.bind(this);
+    this._onSendPress = this._onSendPress.bind(this);
+
     this._onEscPress = this._onEscPress.bind(this);
     this._onCloseButtonClick = this._onCloseButtonClick.bind(this);
     this._closePopup = this._closePopup.bind(this);
 
   }
   init(currentFilm) {
+
     document.addEventListener(`keydown`, this._onEscPress);
     document.addEventListener(`click`, this._onCloseButtonClick);
+    document.addEventListener(`keydown`, this._onSendPress);
 
     this._currentFilm = currentFilm;
 
@@ -32,7 +39,8 @@ export default class Popup {
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);
     this._filmPopupComponent.onHistoryPopupClick(this._onHistoryPopup);
-    // this._filmPopupComponent.onEmojiPopupClick();
+    this._filmPopupComponent.onDeleteButtonClick(this._onDeleteComment);
+    this._filmPopupComponent.onSendKeysPress(this._onSendPress);
 
     if (prevFilmComponent === null) {
       this._filmPopupContainer.appendChild(this._filmPopupComponent.getElement());
@@ -64,9 +72,12 @@ export default class Popup {
 
     document.removeEventListener(`keydown`, this._onEscPress);
     document.removeEventListener(`click`, this._onCloseButtonClick);
+    document.removeEventListener(`keydown`, this._onSendPress);
   }
   _onFavoritePopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -78,6 +89,8 @@ export default class Popup {
   }
   _onWatchlistPopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -89,6 +102,8 @@ export default class Popup {
   }
   _onHistoryPopup() {
     this._changePopupData(
+        UserAction.UPDATE_FILM_INFO,
+        UpdateType.MINOR,
         Object.assign(
             {},
             this._currentFilm,
@@ -97,5 +112,48 @@ export default class Popup {
             }
         )
     );
+  }
+  _onDeleteComment(commentId) {
+    const newComments = this._currentFilm.comments.filter((comment) => comment.id !== parseInt(commentId, 10));
+    this._changePopupData(
+        UserAction.DELETE_COMMENT,
+        UpdateType.MINOR,
+        Object.assign(
+            {},
+            this._currentFilm,
+            {
+              comments: newComments.slice()
+            }
+        )
+    );
+  }
+  _onSendPress(evt) {
+    if (evt.keyCode === ENTR_KEYCODE && CTRL_KEYCODE) {
+      const insertedText = this._filmPopupComponent.getMessage();
+      const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`).value;
+
+      if (chosenEmoji && insertedText) {
+        const newUserComment = {
+          id: generateId(),
+          text: insertedText,
+          emoji: `./images/emoji/${chosenEmoji}.png`,
+          author: `RandomPerson`,
+          date: new Date(),
+        };
+        const newComments = this._currentFilm.comments.slice();
+        newComments.push(newUserComment);
+        this._changePopupData(
+            UserAction.ADD_COMMENT,
+            UpdateType.MINOR,
+            Object.assign(
+                {},
+                this._currentFilm,
+                {
+                  comments: newComments
+                }
+            )
+        );
+      }
+    }
   }
 }
