@@ -4,12 +4,17 @@ export default class Movies extends Observer {
   constructor() {
     super();
     this._films = [];
+
+    this.getIsHistoryMovies = this.getIsHistoryMovies.bind(this);
   }
   setFilms(films) {
     this._films = films.slice();
   }
   getFilms() {
     return this._films;
+  }
+  getIsHistoryMovies() {
+    return this._films.filter((film) => film.isHistory).length;
   }
   updateFilm(updateType, update) {
     const index = this._films.findIndex((film) => film.id === update.id);

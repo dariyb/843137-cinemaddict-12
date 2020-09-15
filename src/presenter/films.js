@@ -9,7 +9,7 @@ import ShowMoreButtonView from "../view/show-more-button.js";
 import PopupPresenter from "./popup.js";
 import {TOP_RATED, MOST_COMMENTED, FILM_COUNT_PER_STEP} from "../constants.js";
 import FilmsStatisticsView from "../view/films-statistics.js";
-import {RenderPosition, render, remove} from "../utils/render.js";
+import {RenderPosition, render, remove, replace} from "../utils/render.js";
 import {sortFilmDateUp, sortFilmRatingUp} from "../utils/film.js";
 import {filter} from "../utils/filter.js";
 import {SortType, UserAction, UpdateType} from "../constants.js";
@@ -24,6 +24,8 @@ export default class MovieList {
     this._filmCards = {};
     this._filmCardsExtra = {};
     this._filmPopupCurrent = null;
+
+    this._footerStats = null;
 
     this._sortComponent = null;
     this._showMoreButtonComponent = null;
@@ -46,8 +48,6 @@ export default class MovieList {
     this._onShowMoreButtonClick = this._onShowMoreButtonClick.bind(this);
     this._onSortTypeChangeClick = this._onSortTypeChangeClick.bind(this);
 
-    this._moviesModel.addObserver(this._onModelEvent);
-    this._filterModel.addObserver(this._onModelEvent);
   }
   init() {
     render(this._filmsContainer, this._filmsSectionComponent, RenderPosition.BEFOREEND);
@@ -57,6 +57,15 @@ export default class MovieList {
     this._renderMainFilmsSection();
     this._renderExtraFilms();
     this._renderFooter();
+
+    this._moviesModel.addObserver(this._onModelEvent);
+    this._filterModel.addObserver(this._onModelEvent);
+  }
+  destroyFilmsSection() {
+    this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
+    remove(this._filmsSectionComponent);
+    this._moviesModel.removeObserver(this._onModelEvent);
+    this._filterModel.removeObserver(this._onModelEvent);
   }
   _getMovies() {
     const filterType = this._filterModel.getFilter();
@@ -274,6 +283,16 @@ export default class MovieList {
     const moviesList = this._getMovies().slice();
     this._siteFooterStatistics = this._siteFooter.querySelector(`.footer__statistics`);
 
-    render(this._siteFooterStatistics, new FilmsStatisticsView(moviesList), RenderPosition.BEFOREEND);
+    const prevFooterEl = this._footerStats;
+    this._footerStats = new FilmsStatisticsView(moviesList);
+
+    if (prevFooterEl === null) {
+      render(this._siteFooterStatistics, this._footerStats, RenderPosition.BEFOREEND);
+      return;
+    }
+    if (this._siteFooterStatistics.contains(prevFooterEl.getElement())) {
+      replace(this._footerStats, prevFooterEl);
+    }
+    remove(prevFooterEl);
   }
 }

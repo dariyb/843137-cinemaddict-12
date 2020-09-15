@@ -35,3 +35,16 @@ export const FilterType = {
   HISTORY: `History`,
   FAVORITES: `Favorites`
 };
+
+export const MenuItem = {
+  DEFAULT: `default`,
+  STATS: `stats`
+};
+
+export const StatsFilter = {
+  ALL_TIME: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+};

@@ -17,7 +17,7 @@ export const createFilterTemplate = (filterItems, currentFilterType) => {
     <div class="main-navigation__items">
     ${filterItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#stats" class="main-navigation__additional" data-id="stats">Stats</a>
   </nav>`;
 };
 
@@ -28,6 +28,7 @@ export default class Navigation extends AbstractView {
     this._currentFilter = currentFilterType;
 
     this._onFilterChange = this._onFilterChange.bind(this);
+    this._onStatsClick = this._onStatsClick.bind(this);
   }
   getTemplate() {
     return createFilterTemplate(this._films, this._currentFilter);
@@ -38,8 +39,16 @@ export default class Navigation extends AbstractView {
       this._callback.filterTypeChange(evt.target.dataset.id);
     }
   }
+  _onStatsClick(evt) {
+    evt.preventDefault();
+    this._callback.statsClick(evt.target.dataset.id);
+  }
   onFilterTypeChange(callback) {
     this._callback.filterTypeChange = callback;
     this.getElement().addEventListener(`click`, this._onFilterChange);
+  }
+  onStatisticsClick(callback) {
+    this._callback.statsClick = callback;
+    this.getElement().querySelector(`[data-id='stats']`).addEventListener(`click`, this._onStatsClick);
   }
 }
