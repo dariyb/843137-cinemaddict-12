@@ -29,7 +29,7 @@ export default class Filter {
     const filters = this._getFilters();
     const prevFilterComponent = this._filterComponent;
 
-    this._filterComponent = new NavigationView(filters, this._currentFilter);
+    this._filterComponent = new NavigationView(filters, this._currentFilter, this._statisticMode);
     this._filterComponent.onFilterTypeChange(this._onFilterChangeType);
     this._filterComponent.onStatisticsClick(this._openStatistics);
 

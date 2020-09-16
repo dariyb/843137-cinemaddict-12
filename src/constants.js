@@ -33,7 +33,8 @@ export const FilterType = {
   ALL: `All Movies`,
   WATCHLIST: `Watchlist`,
   HISTORY: `History`,
-  FAVORITES: `Favorites`
+  FAVORITES: `Favorites`,
+  STATS: `Stats`
 };
 
 export const MenuItem = {

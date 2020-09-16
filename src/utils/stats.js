@@ -18,7 +18,7 @@ export const getUserStatus = (watchedFilmsCount) => {
       userStatus = `Movie Buff`;
       break;
     case watchedFilmsCount === WatchedFilmsCount.ZERO:
-      userStatus = ``;
+      userStatus = ` `;
       break;
   }
   return userStatus;

@@ -38,7 +38,7 @@ export default class MovieList {
     this._siteFooter = document.querySelector(`.footer`);
 
     this._cardFilmClickHandler = this._cardFilmClickHandler.bind(this);
-    this._filmsSectionComponent.onFilmsSectionClick(this._cardFilmClickHandler);
+    // this._filmsSectionComponent.onFilmsSectionClick(this._cardFilmClickHandler);
 
     this._onViewAction = this._onViewAction.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
@@ -57,6 +57,8 @@ export default class MovieList {
     this._renderMainFilmsSection();
     this._renderExtraFilms();
     this._renderFooter();
+
+    this._filmsSectionComponent.onFilmsSectionClick(this._cardFilmClickHandler);
 
     this._moviesModel.addObserver(this._onModelEvent);
     this._filterModel.addObserver(this._onModelEvent);

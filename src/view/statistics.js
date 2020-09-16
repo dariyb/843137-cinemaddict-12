@@ -82,7 +82,7 @@ const createStatisticsTemplate = ({filter, watchedFilmsCount, totalDuration, top
     <p class="statistic__rank">
       Your rank
       <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-      <span class="statistic__rank-label">${userStatus}</span>
+      <span class="statistic__rank-label ${userStatus === null ? `visually-hidden` : ``}">${userStatus}</span>
     </p>
 
     <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">

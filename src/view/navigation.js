@@ -1,4 +1,5 @@
 import AbstractView from "./abstract.js";
+import {MenuItem} from "../constants.js";
 
 const createSiteNavigationItemTemplate = (films, currentType) => {
   const {type, name, count} = films;
@@ -8,7 +9,7 @@ const createSiteNavigationItemTemplate = (films, currentType) => {
   );
 };
 
-export const createFilterTemplate = (filterItems, currentFilterType) => {
+export const createFilterTemplate = (filterItems, currentFilterType, menuItem) => {
   const filterItemsTemplate = filterItems
   .map((filter) => createSiteNavigationItemTemplate(filter, currentFilterType))
   .join(``);
@@ -17,21 +18,22 @@ export const createFilterTemplate = (filterItems, currentFilterType) => {
     <div class="main-navigation__items">
     ${filterItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional" data-id="stats">Stats</a>
+    <a href="#stats" class="main-navigation__additional ${menuItem === MenuItem.STATS ? `main-navigation__additional--active` : ``}" data-id="stats">Stats</a>
   </nav>`;
 };
 
 export default class Navigation extends AbstractView {
-  constructor(films, currentFilterType) {
+  constructor(films, currentFilterType, menuItem) {
     super();
     this._films = films;
     this._currentFilter = currentFilterType;
+    this._menuItem = menuItem;
 
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onStatsClick = this._onStatsClick.bind(this);
   }
   getTemplate() {
-    return createFilterTemplate(this._films, this._currentFilter);
+    return createFilterTemplate(this._films, this._currentFilter, this._menuItem);
   }
   _onFilterChange(evt) {
     evt.preventDefault();
