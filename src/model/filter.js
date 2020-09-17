@@ -11,6 +11,9 @@ export default class Filter extends Observer {
     this._notify(updateType, filter);
   }
   getFilter() {
+    if (this._activeFilter === `stats`) {
+      this._activeFilter = FilterType.ALL;
+    }
     return this._activeFilter;
   }
 }

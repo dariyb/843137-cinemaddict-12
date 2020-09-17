@@ -41,14 +41,17 @@ const getRunningTime = () => {
   const hourRunningTime = getRandomInteger(MIN_HOUR_TIME, MAX_HOUR_TIME);
   const minuteRunningTime = getRandomInteger(MIN_MINUTE_TIME, MAX_MINUTE_TIME);
 
-  if (hourRunningTime && minuteRunningTime) {
-    return `${hourRunningTime}h ${minuteRunningTime}m`;
-  } else if (!hourRunningTime && minuteRunningTime) {
-    return `${minuteRunningTime}m`;
-  } else if (!hourRunningTime && !minuteRunningTime) {
-    return `unknown`;
-  }
-  return `${hourRunningTime}h`;
+  const runningTimeInMinutes = hourRunningTime * 60 + minuteRunningTime;
+
+  // if (hourRunningTime && minuteRunningTime) {
+  //   return `${hourRunningTime}h ${minuteRunningTime}m`;
+  // } else if (!hourRunningTime && minuteRunningTime) {
+  //   return `${minuteRunningTime}m`;
+  // } else if (!hourRunningTime && !minuteRunningTime) {
+  //   return `unknown`;
+  // }
+  // return `${hourRunningTime}h`;
+  return runningTimeInMinutes;
 };
 
 const getGenre = () => {
@@ -86,7 +89,7 @@ const getDescription = () => {
   return description.split(`.`).slice(0, randomIndex).join(`.`);
 };
 
-const generateCommentDate = () => {
+export const generateDate = () => {
   const currentDay = new Date();
 
   currentDay.setHours(23, 59, 59, 999);
@@ -95,12 +98,16 @@ const generateCommentDate = () => {
   return new Date(currentDay);
 };
 
+const randomDateTemp = (start, end) => {
+  return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+};
+
 const getComments = () => {
   return {
     text: getRandomizeInfo(texts),
     emoji: `./images/emoji/${getRandomizeInfo(EMOJIES)}`,
     author: getRandomizeInfo(authors),
-    date: generateCommentDate(),
+    date: generateDate(),
     id: getId()
   };
 };
@@ -124,6 +131,7 @@ export const generateFilmInfo = () => {
     isWatchlist: Boolean(getRandomInteger(0, 1)),
     isHistory: Boolean(getRandomInteger(0, 1)),
     isFavorite: Boolean(getRandomInteger(0, 1)),
+    watchingDate: randomDateTemp(new Date(2010, 0, 1), new Date()),
     id: getId()
   };
 };

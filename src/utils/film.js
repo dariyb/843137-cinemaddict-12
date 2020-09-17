@@ -2,7 +2,8 @@ import moment from "moment";
 
 export const DatePlace = {
   POPUPDATE: `film release`,
-  COMMENTDATE: `comment date`
+  COMMENTDATE: `comment date`,
+  RUNNING_TIME: `running-time`
 };
 export const convertDate = (date, place) => {
   switch (place) {

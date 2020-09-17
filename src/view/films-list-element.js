@@ -4,6 +4,24 @@ const createSiteFilmsListElementTemplate = (film) => {
   const MAX_DESCRIPTION_LENGTH = 140;
   const {poster, name, rating, releaseDate, runningTime, genre, description, comments, isWatchlist, isHistory, isFavorite, id} = film;
 
+  const runningFilmTime = (runnTime) => {
+    if (runnTime > 60) {
+      let hour = Math.floor((runnTime / 60));
+      let minutes = Math.floor(runnTime - (hour * 60));
+      if (minutes > 60) {
+        hour = Math.floor(hour + (minutes / 60));
+        minutes = Math.floor(minutes - (minutes / 60));
+      }
+      if (minutes < 60) {
+        minutes = Math.floor(minutes);
+      }
+      return hour + `h` + ` ` + minutes + `m`;
+    } else if (runnTime < 60) {
+      return runnTime + `m`;
+    }
+    return runnTime + `h`;
+  };
+
   const reduction = (descText, maxLength) => {
     if (descText.length > maxLength) {
       return descText.slice(0, maxLength - 1) + `...`;
@@ -29,7 +47,7 @@ const createSiteFilmsListElementTemplate = (film) => {
       <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
         <span class="film-card__year">${releaseDate.getFullYear()}</span>
-        <span class="film-card__duration">${runningTime}</span>
+        <span class="film-card__duration">${runningFilmTime(runningTime)}</span>
         <span class="film-card__genre">${genre.genres[0]}</span>
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
