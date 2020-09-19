@@ -68,19 +68,21 @@ export default class Movies extends Observer {
           "film_info": {
             "poster": movie.poster,
             "title": movie.name,
+            "alternative_title": movie.alternativeName,
             "total_rating": movie.rating,
             "director": movie.director,
             "writers": movie.writers,
             "actors": movie.actors,
+            "age_rating": movie.ageRating,
+            "description": movie.description,
             "release": {
               "date": movie.releaseDate,
               "release_country": movie.country,
             },
             "runtime": movie.runningTime,
             "genre": movie.genre,
-            "description": movie.description,
-            "age_rating": movie.genre.age,
           },
+          "comments": movie.comments,
           "user_details": {
             "already_watched": movie.isHistory,
             "watchlist": movie.isWatchlist,
@@ -90,6 +92,26 @@ export default class Movies extends Observer {
           "id": movie.id
         }
     );
+    // delete adaptedMovie.poster;
+    // delete adaptedMovie.name;
+    // delete adaptedMovie.alternativeName;
+    // delete adaptedMovie.rating;
+    // delete adaptedMovie.ageRating;
+    // delete adaptedMovie.releaseDate;
+    // delete adaptedMovie.runningTime;
+    // delete adaptedMovie.genre;
+    // delete adaptedMovie.description;
+    // delete adaptedMovie.director;
+    // delete adaptedMovie.comments;
+    // delete adaptedMovie.writers;
+    // delete adaptedMovie.actors;
+    // delete adaptedMovie.country;
+    // delete adaptedMovie.isWatchlist;
+    // delete adaptedMovie.isHistory;
+    // delete adaptedMovie.isFavorite;
+    // delete adaptedMovie.watchingDate;
+    // delete adaptedMovie.id;
+
     return adaptedMovie;
   }
 }
