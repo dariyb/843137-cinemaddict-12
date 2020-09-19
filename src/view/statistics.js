@@ -125,6 +125,8 @@ export default class Statistics extends SmartView {
     this._statsData = statsData;
     this._moviesModel = moviesModel;
     this._chart = null;
+    this._genres = null;
+    this._genreCount = null;
 
     this._setChart();
   }
@@ -140,14 +142,13 @@ export default class Statistics extends SmartView {
     this.getElement().querySelectorAll(`.statistic__filters-input`).forEach((filter) => filter.addEventListener(`click`, this._onChosenStats));
   }
   _setChart() {
-    const genres = Object.keys(this._statsData.genreCount);
-    const genresCount = Object.values(this._statsData.genreCount);
-    const genresLength = genres.length;
-
-    if (genresLength) {
-      const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
+    const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
+    if (this._statsData.genreCount !== null) {
+      this._genres = Object.keys(this._statsData.genreCount);
+      this._genreCount = Object.values(this._statsData.genreCount);
+      const genresLength = this._genres.length;
       statisticCtx.height = BAR_HEIGHT * genresLength;
-      this._chart = generateChart(statisticCtx, genres, genresCount);
+      generateChart(statisticCtx, this._genres, this._genreCount);
     }
   }
 }

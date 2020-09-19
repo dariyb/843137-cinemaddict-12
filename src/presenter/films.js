@@ -65,9 +65,9 @@ export default class MovieList {
     // this._renderMainFilmsSection();
     // // this._renderExtraFilms();
     //
-    // if (this._getMovies().length !== 0) {
-    //   this._renderExtraFilms();
-    // }
+    if (this._getMovies().length !== 0) {
+      this._renderExtraFilms();
+    }
     // // this._renderFooter();
   }
   destroyFilmsSection() {

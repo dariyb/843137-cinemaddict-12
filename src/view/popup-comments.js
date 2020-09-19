@@ -4,7 +4,6 @@ import {convertDate} from "../utils/film.js";
 
 const createFilmCommentTemplate = (film) => {
   const {comment, author, date, emotion, id} = film;
-  console.log(film);
 
   const humDate = date !== null
     ? convertDate(date, `comment date`)

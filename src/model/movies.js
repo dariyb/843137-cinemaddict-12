@@ -32,7 +32,6 @@ export default class Movies extends Observer {
     this._notify(updateType, update);
   }
   static adaptToClient(movie) {
-    console.log(movie);
     const adaptedMovie = Object.assign(
         {},
         movie,

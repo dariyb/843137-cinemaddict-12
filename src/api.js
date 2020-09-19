@@ -25,8 +25,6 @@ export default class Api {
     .then(Api.toJSON);
   }
   updateFilm(film) {
-    debugger;
-    console.log(film);
     return this._load({
       url: `movies/${film.id}`,
       method: Method.PUT,
