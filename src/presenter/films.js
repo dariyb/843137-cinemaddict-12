@@ -1,5 +1,6 @@
 import FilmsSectionView from "../view/films-section.js";
 import FilmsListView from "../view/films-list.js";
+import LoadingView from "../view/loading.js";
 import NoFilmsView from "../view/no-films.js";
 import SortView from "../view/sorting-list.js";
 import FilmsListContainerView from "../view/films-list-container.js";
@@ -15,7 +16,7 @@ import {filter} from "../utils/filter.js";
 import {SortType, UserAction, UpdateType} from "../constants.js";
 
 export default class MovieList {
-  constructor(filmsContainer, moviesModel, filterModel) {
+  constructor(filmsContainer, moviesModel, filterModel, api) {
     this._filmsContainer = filmsContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
@@ -24,6 +25,8 @@ export default class MovieList {
     this._filmCards = {};
     this._filmCardsExtra = {};
     this._filmPopupCurrent = null;
+    this._isLoading = true;
+    this._api = api;
 
     this._footerStats = null;
 
@@ -34,11 +37,11 @@ export default class MovieList {
     this._filmsListComponent = new FilmsListView();
     this._filmsListContainerComponent = new FilmsListContainerView();
     this._noFilmsList = new NoFilmsView();
+    this._loadingComponent = new LoadingView();
     this._bodyTag = document.querySelector(`body`);
     this._siteFooter = document.querySelector(`.footer`);
 
     this._cardFilmClickHandler = this._cardFilmClickHandler.bind(this);
-    // this._filmsSectionComponent.onFilmsSectionClick(this._cardFilmClickHandler);
 
     this._onViewAction = this._onViewAction.bind(this);
     this._onModelEvent = this._onModelEvent.bind(this);
@@ -54,14 +57,18 @@ export default class MovieList {
     render(this._filmsSectionComponent, this._filmsListComponent, RenderPosition.BEFOREEND);
     render(this._filmsListComponent, this._filmsListContainerComponent, RenderPosition.BEFOREEND);
 
-    this._renderMainFilmsSection();
-    this._renderExtraFilms();
-    this._renderFooter();
-
     this._filmsSectionComponent.onFilmsSectionClick(this._cardFilmClickHandler);
 
     this._moviesModel.addObserver(this._onModelEvent);
     this._filterModel.addObserver(this._onModelEvent);
+
+    // this._renderMainFilmsSection();
+    // // this._renderExtraFilms();
+    //
+    // if (this._getMovies().length !== 0) {
+    //   this._renderExtraFilms();
+    // }
+    // // this._renderFooter();
   }
   destroyFilmsSection() {
     this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
@@ -85,13 +92,21 @@ export default class MovieList {
   _onViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM_INFO:
-        this._moviesModel.updateFilm(updateType, update);
+        // this._moviesModel.updateFilm(updateType, update);
+        this._api.updateFilm(update).then((response) => {
+          this._moviesModel.updateFilm(updateType, response);
+        });
         break;
       case UserAction.ADD_COMMENT:
-        this._moviesModel.updateFilm(updateType, update);
+        this._api.updateFilm(update).then((response) => {
+          this._moviesModel.updateFilm(updateType, response);
+        });
         break;
       case UserAction.DELETE_COMMENT:
-        this._moviesModel.updateFilm(updateType, update);
+        this._api.updateFilm(update).then((response) => {
+          this._moviesModel.updateFilm(updateType, response);
+        });
+        break;
     }
   }
   _onModelEvent(updateType, data) {
@@ -117,13 +132,22 @@ export default class MovieList {
         if (this._filmPopupCurrent) {
           this._filmPopupCurrent.init(data);
         }
-        this._clearFilmsSection();
+        this._clearFilmsSection({resetRenderedFilmCount: true});
         this._renderMainFilmsSection();
         break;
       case UpdateType.MAJOR:
         // обновление при сортировке
         this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
         this._renderMainFilmsSection();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderMainFilmsSection();
+        if (this._getMovies().length !== 0) {
+          this._renderExtraFilms();
+        }
+        this._renderFooter();
         break;
     }
   }
@@ -180,7 +204,6 @@ export default class MovieList {
     films.forEach((film) => this._renderFilm(this._filmsListContainerComponent, film));
   }
   _renderExtraFilms() {
-    // по идее renderContent
     const titleExtraList = [`Top rated`, `Most commented`];
     const moviesList = this._getMovies().slice();
 
@@ -200,8 +223,13 @@ export default class MovieList {
       .slice()
       .forEach((film) => this._renderFilm(this._extraFilmsContainer, film, this._filmCardsExtra));
   }
+  _renderLoading() {
+    // remove(this._filmsListContainerComponent);
+    render(this._filmsListComponent, this._loadingComponent, RenderPosition.BEFOREEND);
+  }
   _renderNoFilms() {
     // рендеринг заглушки
+    remove(this._filmsListContainerComponent);
     render(this._filmsListComponent, this._noFilmsList, RenderPosition.BEFOREEND);
   }
   _onShowMoreButtonClick() {
@@ -236,6 +264,7 @@ export default class MovieList {
 
     remove(this._sortComponent);
     remove(this._noFilmsList);
+    remove(this._loadingComponent);
     remove(this._showMoreButtonComponent);
 
     if (resetRenderedFilmCount) {
@@ -248,6 +277,11 @@ export default class MovieList {
     }
   }
   _renderMainFilmsSection() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
     const moviesCount = this._getMovies().length;
     const movies = this._getMovies().slice(0, Math.min(moviesCount, FILM_COUNT_PER_STEP));
 
@@ -263,11 +297,10 @@ export default class MovieList {
   }
   _findElement(id) {
     const moviesList = this._getMovies().slice();
-    this._filmPopup = moviesList.find((film) => film.id === Number(id));
+    this._filmPopup = moviesList.find((film) => film.id === id);
     return this._filmPopup;
   }
   _cardFilmClickHandler(evt) {
-
     if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
       this._popupId = event.target.parentNode.dataset.id;
       this._currentFilm = this._findElement(this._popupId);
@@ -277,7 +310,7 @@ export default class MovieList {
   _renderPopupFilm() {
     this.close();
 
-    const popupPresenter = new PopupPresenter(this._bodyTag, this._onViewAction, this.close);
+    const popupPresenter = new PopupPresenter(this._bodyTag, this._onViewAction, this.close, this._api);
     popupPresenter.init(this._currentFilm);
     this._filmPopupCurrent = popupPresenter;
   }

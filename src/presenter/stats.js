@@ -85,8 +85,8 @@ export default class Stats {
     data.totalDuration = historyFilms.reduce((count, {runningTime}) => count + runningTime, 0);
 
     films.forEach(({genre}) => {
-      if (genre.genres.length > 0) {
-        allGenres.push(...genre.genres);
+      if (genre.length > 0) {
+        allGenres.push(...genre);
       }
     });
     if (allGenres.length > 0) {

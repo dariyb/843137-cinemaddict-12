@@ -3,7 +3,8 @@ import AbstractView from "./abstract.js";
 import {convertDate} from "../utils/film.js";
 
 const createFilmCommentTemplate = (film) => {
-  const {text, author, date, emoji, id} = film;
+  const {comment, author, date, emotion, id} = film;
+  console.log(film);
 
   const humDate = date !== null
     ? convertDate(date, `comment date`)
@@ -12,10 +13,10 @@ const createFilmCommentTemplate = (film) => {
 
   return `<li class="film-details__comment">
   <span class="film-details__comment-emoji">
-    <img src="${emoji}" width="55" height="55" alt="emoji-smile">
+    <img src="./images/emoji/${emotion}.png" width="55" height="55" alt="emoji-${emotion}">
   </span>
   <div>
-    <p class="film-details__comment-text">${he.encode(text)}</p>
+    <p class="film-details__comment-text">${he.encode(comment)}</p>
     <p class="film-details__comment-info">
       <span class="film-details__comment-author">${author}</span>
       <span class="film-details__comment-day">${humDate}</span>

@@ -26,16 +26,10 @@ export default class Sort extends AbstractView {
       return;
     }
     evt.preventDefault();
-    // evt.target.classList.add(`sort__button--active`);
-    //
-    // this._currentSortType.classList.remove(`sort__button--active`);
-    // this._currentSortType = evt.target;
-
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
   onSortTypeClick(callback) {
     this._callback.sortTypeChange = callback;
-    // this._currentSortType = this.getElement().querySelector(`a:first-child`);
     this.getElement().addEventListener(`click`, this._sortTypeChangeClick);
   }
 }
