@@ -189,13 +189,20 @@ export default class FilmPopup extends SmartView {
     this._data.genre.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
   }
   _renderComments(element) {
+    debugger;
     this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
+    console.log(this._data);
+    console.log(this._data.popupComments);
+    const thisFilmComments = this._data.popupComments.slice();
 
-    this._api.getComments(this._data.id)
-    .then((comments) => {
-      this._commentsArr = comments.slice();
-      this._commentsArr.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
-    });
+    thisFilmComments.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
+
+    // this._api.getComments(this._data.id)
+    // .then((comments) => {
+    //   this._commentsArr = comments.slice();
+    //   console.log(this._commentsArr);
+    //   this._commentsArr.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
+    // });
   }
   _chosenEmoji(emoji) {
     this._emoji = emoji;

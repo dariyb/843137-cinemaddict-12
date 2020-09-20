@@ -199,6 +199,11 @@ export default class MovieList {
     this._filmElementPresenter = new FilmElementPresenter(filmListElement, this._onViewAction);
     this._filmElementPresenter.init(film);
     cardsList[film.id] = this._filmElementPresenter;
+
+    this._api.getComments(film.id)
+    .then((comments) => {
+      film.popupComments = comments.slice();
+    });
   }
   _renderMainFilms(films) {
     films.forEach((film) => this._renderFilm(this._filmsListContainerComponent, film));

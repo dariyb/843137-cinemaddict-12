@@ -33,6 +33,7 @@ movieListPresenter.init();
 api.getMovies()
 .then((films) => {
   moviesModel.setFilms(UpdateType.INIT, films);
+  console.log(films);
 })
 .catch(() => {
   moviesModel.setFilms(UpdateType.INIT, []);
