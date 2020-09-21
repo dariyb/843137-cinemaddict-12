@@ -48,7 +48,7 @@ const createSiteFilmsListElementTemplate = (film) => {
       <p class="film-card__info">
         <span class="film-card__year">${releaseDate.getFullYear()}</span>
         <span class="film-card__duration">${runningFilmTime(runningTime)}</span>
-        <span class="film-card__genre">${genre.genres[0]}</span>
+        <span class="film-card__genre">${genre.length === 0 ? `` : genre[0]}</span>
       </p>
       <img src="${poster}" alt="" class="film-card__poster">
       <p class="film-card__description">${reduction(description, MAX_DESCRIPTION_LENGTH)}</p>

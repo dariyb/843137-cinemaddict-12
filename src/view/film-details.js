@@ -14,11 +14,11 @@ const getEmoji = (currentEmoji) => {
 };
 
 const insertChosenEmoji = (chosenEmoji) => {
-  return `<img src="./images/emoji/${chosenEmoji}.png" width="55" height="55" alt="emoji">`;
+  return `<img src="./images/emoji/${chosenEmoji}.png" width="55" height="55" alt="emoji-${chosenEmoji}">`;
 };
 
-const createFilmDetailsTemplate = (data, emoji, message) => {
-  const {poster, name, rating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = data;
+const createFilmDetailsTemplate = (data, api, emoji, message) => {
+  const {poster, name, alternativeName, rating, ageRating, releaseDate, runningTime, description, comments, director, actors, writers, country, genre, isWatchlist, isHistory, isFavorite, id} = data;
 
   const emojiTemplate = getEmoji(emoji);
 
@@ -47,22 +47,18 @@ const createFilmDetailsTemplate = (data, emoji, message) => {
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
             <img class="film-details__poster-img" src="${poster}" alt="">
-
-            <p class="film-details__age">${genre.age}</p>
+            <p class="film-details__age">${ageRating ? `18+` : ``}</p>
           </div>
-
           <div class="film-details__info">
             <div class="film-details__info-head">
               <div class="film-details__title-wrap">
                 <h3 class="film-details__title">${name}</h3>
-                <p class="film-details__title-original">Original: ${name}</p>
+                <p class="film-details__title-original">Original: ${alternativeName}</p>
               </div>
-
               <div class="film-details__rating">
                 <p class="film-details__total-rating">${rating}</p>
               </div>
             </div>
-
             <table class="film-details__table">
               <tr class="film-details__row">
                 <td class="film-details__term">Director</td>
@@ -89,44 +85,35 @@ const createFilmDetailsTemplate = (data, emoji, message) => {
                 <td class="film-details__cell">${country}</td>
               </tr>
               <tr class="film-details__row">
-                <td class="film-details__term">${genre.title}</td>
+                <td class="film-details__term">${genre.length > 1 ? `Genres` : `Genre`}</td>
                 <td class="film-details__cell"></td>
               </tr>
             </table>
-
             <p class="film-details__film-description">
               ${description}
             </p>
           </div>
         </div>
-
         <section class="film-details__controls">
           <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${watchlistClassName}>
           <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
-
           <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${watchedClassName}>
           <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
-
           <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${favoriteClassName}>
           <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
         </section>
       </div>
-
       <div class="form-details__bottom-container">
         <section class="film-details__comments-wrap">
           <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${comments.length}</span></h3>
-
           <ul class="film-details__comments-list"></ul>
-
           <div class="film-details__new-comment">
             <div for="add-emoji" class="film-details__add-emoji-label">
             ${emoji ? `${insertChosenEmoji(emoji)}` : ``}
             </div>
-
             <label class="film-details__comment-label">
               <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${message ? message : ``}</textarea>
             </label>
-
             <div class="film-details__emoji-list">
             ${emojiTemplate}
             </div>
@@ -138,12 +125,14 @@ const createFilmDetailsTemplate = (data, emoji, message) => {
 };
 
 export default class FilmPopup extends SmartView {
-  constructor(data) {
+  constructor(data, api, currentFilmComments) {
     super();
     this._data = data;
+    this._api = api;
     this._emoji = null;
     this._comment = null;
     this._userMessage = null;
+    this._currentFilmComments = currentFilmComments;
 
     this._onFavoritePopupButton = this._onFavoritePopupButton.bind(this);
     this._onWatchlistPopupButton = this._onWatchlistPopupButton.bind(this);
@@ -158,7 +147,7 @@ export default class FilmPopup extends SmartView {
 
   }
   getTemplate() {
-    return createFilmDetailsTemplate(this._data, this._emoji, this._userMessage);
+    return createFilmDetailsTemplate(this._data, this._api, this._emoji, this._userMessage);
   }
   getElement() {
     if (!this._element) {
@@ -198,12 +187,14 @@ export default class FilmPopup extends SmartView {
     this._filmTableRows = this._filmGenreTable.querySelectorAll(`.film-details__row`);
     this._filmGenreRow = this._filmTableRows[this._filmTableRows.length - 1];
 
-    this._data.genre.genres.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
+    this._data.genre.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
   }
   _renderComments(element) {
-    this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
 
-    this._data.comments.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
+    this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
+    const filmComments = this._currentFilmComments.getComments(this._data.id) || [];
+
+    filmComments.forEach((comment) => render(this._filmPopupCommentList, new FilmCommentView(comment), RenderPosition.BEFOREEND));
   }
   _chosenEmoji(emoji) {
     this._emoji = emoji;

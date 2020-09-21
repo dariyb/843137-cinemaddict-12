@@ -5,10 +5,12 @@ import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
 export default class Popup {
-  constructor(filmPopupContainer, changePopupData, close) {
+  constructor(filmPopupContainer, changePopupData, close, api, currentFilmComments) {
     this._filmPopupContainer = filmPopupContainer;
     this._changePopupData = changePopupData;
     this.close = close;
+    this._api = api;
+    this._currentFilmComments = currentFilmComments;
 
     this._filmPopupComponent = null;
 
@@ -34,7 +36,7 @@ export default class Popup {
 
     const prevFilmComponent = this._filmPopupComponent;
 
-    this._filmPopupComponent = new FilmPopupView(currentFilm);
+    this._filmPopupComponent = new FilmPopupView(currentFilm, this._api, this._currentFilmComments);
 
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);
@@ -117,7 +119,7 @@ export default class Popup {
     const newComments = this._currentFilm.comments.filter((comment) => comment.id !== parseInt(commentId, 10));
     this._changePopupData(
         UserAction.DELETE_COMMENT,
-        UpdateType.MINOR,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._currentFilm,
@@ -144,7 +146,7 @@ export default class Popup {
         newComments.push(newUserComment);
         this._changePopupData(
             UserAction.ADD_COMMENT,
-            UpdateType.MINOR,
+            UpdateType.PATCH,
             Object.assign(
                 {},
                 this._currentFilm,
