@@ -5,11 +5,12 @@ import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
 export default class Popup {
-  constructor(filmPopupContainer, changePopupData, close, api) {
+  constructor(filmPopupContainer, changePopupData, close, api, currentFilmComments) {
     this._filmPopupContainer = filmPopupContainer;
     this._changePopupData = changePopupData;
     this.close = close;
     this._api = api;
+    this._currentFilmComments = currentFilmComments;
 
     this._filmPopupComponent = null;
 
@@ -35,7 +36,7 @@ export default class Popup {
 
     const prevFilmComponent = this._filmPopupComponent;
 
-    this._filmPopupComponent = new FilmPopupView(currentFilm, this._api);
+    this._filmPopupComponent = new FilmPopupView(currentFilm, this._api, this._currentFilmComments);
 
     this._filmPopupComponent.onFavoritePopupClick(this._onFavoritePopup);
     this._filmPopupComponent.onWatchlistPopupClick(this._onWatchlistPopup);

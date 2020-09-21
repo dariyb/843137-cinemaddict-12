@@ -16,7 +16,7 @@ import {filter} from "../utils/filter.js";
 import {SortType, UserAction, UpdateType} from "../constants.js";
 
 export default class MovieList {
-  constructor(filmsContainer, moviesModel, filterModel, api) {
+  constructor(filmsContainer, moviesModel, filterModel, api, commentsModel) {
     this._filmsContainer = filmsContainer;
     this._moviesModel = moviesModel;
     this._filterModel = filterModel;
@@ -27,6 +27,7 @@ export default class MovieList {
     this._filmPopupCurrent = null;
     this._isLoading = true;
     this._api = api;
+    this._filmsComments = commentsModel;
 
     this._footerStats = null;
 
@@ -62,13 +63,9 @@ export default class MovieList {
     this._moviesModel.addObserver(this._onModelEvent);
     this._filterModel.addObserver(this._onModelEvent);
 
-    // this._renderMainFilmsSection();
-    // // this._renderExtraFilms();
-    //
     if (this._getMovies().length !== 0) {
       this._renderExtraFilms();
     }
-    // // this._renderFooter();
   }
   destroyFilmsSection() {
     this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
@@ -92,7 +89,6 @@ export default class MovieList {
   _onViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_FILM_INFO:
-        // this._moviesModel.updateFilm(updateType, update);
         this._api.updateFilm(update).then((response) => {
           this._moviesModel.updateFilm(updateType, response);
         });
@@ -199,11 +195,6 @@ export default class MovieList {
     this._filmElementPresenter = new FilmElementPresenter(filmListElement, this._onViewAction);
     this._filmElementPresenter.init(film);
     cardsList[film.id] = this._filmElementPresenter;
-
-    this._api.getComments(film.id)
-    .then((comments) => {
-      film.popupComments = comments.slice();
-    });
   }
   _renderMainFilms(films) {
     films.forEach((film) => this._renderFilm(this._filmsListContainerComponent, film));
@@ -315,7 +306,7 @@ export default class MovieList {
   _renderPopupFilm() {
     this.close();
 
-    const popupPresenter = new PopupPresenter(this._bodyTag, this._onViewAction, this.close, this._api);
+    const popupPresenter = new PopupPresenter(this._bodyTag, this._onViewAction, this.close, this._api, this._filmsComments);
     popupPresenter.init(this._currentFilm);
     this._filmPopupCurrent = popupPresenter;
   }

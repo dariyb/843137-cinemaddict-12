@@ -54,8 +54,7 @@ export default class Movies extends Observer {
           isHistory: movie.user_details.already_watched,
           isFavorite: movie.user_details.favorite,
           watchingDate: movie.user_details.wathing_date !== null ? new Date(movie.user_details.watching_date) : movie.user_details.watching_date,
-          id: movie.id,
-          popupComments: movie.comments.id
+          id: movie.id
         }
     );
     return adaptedMovie;
@@ -92,25 +91,6 @@ export default class Movies extends Observer {
           "id": movie.id
         }
     );
-    // delete adaptedMovie.poster;
-    // delete adaptedMovie.name;
-    // delete adaptedMovie.alternativeName;
-    // delete adaptedMovie.rating;
-    // delete adaptedMovie.ageRating;
-    // delete adaptedMovie.releaseDate;
-    // delete adaptedMovie.runningTime;
-    // delete adaptedMovie.genre;
-    // delete adaptedMovie.description;
-    // delete adaptedMovie.director;
-    // delete adaptedMovie.comments;
-    // delete adaptedMovie.writers;
-    // delete adaptedMovie.actors;
-    // delete adaptedMovie.country;
-    // delete adaptedMovie.isWatchlist;
-    // delete adaptedMovie.isHistory;
-    // delete adaptedMovie.isFavorite;
-    // delete adaptedMovie.watchingDate;
-    // delete adaptedMovie.id;
 
     return adaptedMovie;
   }
