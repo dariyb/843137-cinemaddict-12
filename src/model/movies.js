@@ -47,7 +47,6 @@ export default class Movies extends Observer {
   static adaptToClient(movie) {
     const adaptedMovie = Object.assign(
         {},
-        // movie,
         {
           poster: movie.film_info.poster,
           name: movie.film_info.title,
@@ -75,7 +74,6 @@ export default class Movies extends Observer {
   static adaptToServer(movie) {
     const adaptedMovie = Object.assign(
         {},
-        // movie,
         {
           "film_info": {
             "poster": movie.poster,

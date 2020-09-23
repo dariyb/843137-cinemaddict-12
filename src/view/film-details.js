@@ -130,7 +130,6 @@ export default class FilmPopup extends SmartView {
     this._data = data;
     this._api = api;
     this._emoji = null;
-    this._comment = null;
     this._userMessage = null;
     this._currentFilmComments = currentFilmComments;
 
@@ -159,9 +158,6 @@ export default class FilmPopup extends SmartView {
   }
   removeElement() {
     super.removeElement();
-  }
-  reset() {
-    // здесь возможно будет сброс текста комментариев и эмодзи в будущем~
   }
   getMessage() {
     this._userMessage = this.getElement()
@@ -202,9 +198,6 @@ export default class FilmPopup extends SmartView {
     evt.preventDefault();
     this._chosenEmoji(evt.target.dataset.emoji);
     this.updateElement();
-  }
-  _chosenComment(comment) {
-    this._comment = comment;
   }
   onDeleteButtonClick(callback) {
     this._callback.deleteButtonClick = callback;

@@ -13,21 +13,12 @@ export default class Comments extends Observer {
   getComments(filmId) {
     return this._comments[filmId];
   }
-  updateFilm(updateType, update, updateComment) {
-    const arrComm = [];
-    this._comments[update.id].forEach((comment) => arrComm.push(comment));
-    // console.log(arrComm);
-    // console.log(update.id);
-    // const index = this._comments[filmId].findIndex((film) => film === update.comments);
-    const index = update.id;
-    arrComm.push(updateComment.comments);
+  addComment(updateType, update) {
+    const index = update.movie.id;
 
-    if (index === -1) {
-      throw new Error(`Can't update unexisting film`);
-    }
     this._comments = [
       ...this._comments.slice(0, index),
-      arrComm,
+      update.comments,
       ...this._comments.slice(index + 1)
     ];
     this._notify(updateType, update);

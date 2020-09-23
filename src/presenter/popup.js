@@ -1,6 +1,5 @@
 import FilmPopupView from "../view/film-details.js";
 import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
-// import {generateId} from "../utils/common.js";
 import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
@@ -135,29 +134,19 @@ export default class Popup {
   _onSendPress(evt) {
     if (evt.keyCode === ENTR_KEYCODE && CTRL_KEYCODE) {
       const insertedText = this._filmPopupComponent.getMessage();
-      const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`).value;
+      const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`);
 
-      if (chosenEmoji && insertedText) {
+      if (chosenEmoji === null || insertedText === ``) {
+        this._filmPopupComponent.getElement().querySelector(`.film-details__new-comment`).classList.add(`shake`);
+      } else {
         const newUserComment = {
-          // id: generateId(),
           comment: insertedText,
-          emotion: `${chosenEmoji}`,
-          // author: `RandomPerson`,
+          emotion: `${chosenEmoji.value}`,
           date: new Date(),
         };
-        // const newComments = this._currentFilm.comments.slice();
-        // const newPopComments = this._currentFilmComments.getComments(this._currentFilm.id).slice();
-        // console.log(this._currentFilm.comments);
-        // console.log(this._currentFilmComments.getComments(this._currentFilm.id));
-        // newComments.push(newUserComment.id);
-        // console.log(newComments.push(newUserComment.id));
-        // newPopComments.push(newUserComment);
-        // this._currentFilmComments.slice().push(newUserComment);
         this._changePopupData(
             UserAction.ADD_COMMENT,
             UpdateType.PATCH,
-            // this._currentFilm,
-            // newPopComments
             Object.assign(
                 {},
                 this._currentFilm,

@@ -47,8 +47,7 @@ export default class Api {
       }),
       headers: new Headers({"Content-Type": `application/json`})
     })
-    .then(Api.toJSON)
-    .then((data) => MoviesModel.adaptToClient(data.movie));
+    .then(Api.toJSON);
   }
   deleteComment(commentId) {
     return this._load({
