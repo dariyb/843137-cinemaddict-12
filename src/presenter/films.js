@@ -14,6 +14,7 @@ import {RenderPosition, render, remove, replace} from "../utils/render.js";
 import {sortFilmDateUp, sortFilmRatingUp} from "../utils/film.js";
 import {filter} from "../utils/filter.js";
 import {SortType, UserAction, UpdateType} from "../constants.js";
+import MoviesModel from "../model/movies.js";
 
 export default class MovieList {
   constructor(filmsContainer, moviesModel, filterModel, api, commentsModel) {
@@ -63,6 +64,8 @@ export default class MovieList {
     this._moviesModel.addObserver(this._onModelEvent);
     this._filterModel.addObserver(this._onModelEvent);
 
+    this._renderMainFilmsSection();
+
     if (this._getMovies().length !== 0) {
       this._renderExtraFilms();
     }
@@ -94,13 +97,27 @@ export default class MovieList {
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._api.updateFilm(update).then((response) => {
-          this._moviesModel.updateFilm(updateType, response);
+        const commentInput = document.querySelector(`.film-details__comment-input`);
+        commentInput.setAttribute(`disabled`, true);
+        this._api.addComment(update).then((response) => {
+          this._filmsComments.addComment(updateType, response);
+          this._moviesModel.addComment(updateType, MoviesModel.adaptToClient(response.movie));
+        })
+        .catch(() => {
+          commentInput.removeAttribute(`disabled`);
+          document.querySelector(`.film-details__new-comment`).classList.add(`shake`);
         });
         break;
       case UserAction.DELETE_COMMENT:
-        this._api.updateFilm(update).then((response) => {
-          this._moviesModel.updateFilm(updateType, response);
+        this._api.deleteComment(update.deletedIdComment).then(() => {
+          this._filmsComments.deleteComment(updateType, update);
+          this._moviesModel.updateFilm(updateType, update);
+        })
+        .catch(() => {
+          const deleteButton = document.querySelector(`.film-details__comment-delete[data-id="${update.deletedIdComment}"]`);
+          deleteButton.removeAttribute(`disabled`);
+          deleteButton.textContent = `Delete`;
+          deleteButton.classList.add(`shake`);
         });
         break;
     }
@@ -132,7 +149,6 @@ export default class MovieList {
         this._renderMainFilmsSection();
         break;
       case UpdateType.MAJOR:
-        // обновление при сортировке
         this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
         this._renderMainFilmsSection();
         break;
@@ -155,21 +171,17 @@ export default class MovieList {
     this._filmPopupCurrent = null;
   }
   _onSortTypeChangeClick(sortType) {
-    // - Сортируем задачи
     if (this._currentSortType === sortType) {
       return;
     }
     this._currentSortType = sortType;
-    // - Очищаем список
     this._clearFilmsSection({resetRenderedFilmCount: true});
-    // - Рендерим список заново
     this._renderMainFilmsSection();
   }
   destroy() {
     remove(this._filmComponent);
   }
   _renderSort() {
-    // метод рендеринга для будущей сортировки
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
@@ -191,7 +203,6 @@ export default class MovieList {
     .slice(0, MOST_COMMENTED);
   }
   _renderFilm(filmListElement, film, cardsList = this._filmCards) {
-    // текущая функция renderFilm
     this._filmElementPresenter = new FilmElementPresenter(filmListElement, this._onViewAction);
     this._filmElementPresenter.init(film);
     cardsList[film.id] = this._filmElementPresenter;
@@ -220,11 +231,9 @@ export default class MovieList {
       .forEach((film) => this._renderFilm(this._extraFilmsContainer, film, this._filmCardsExtra));
   }
   _renderLoading() {
-    // remove(this._filmsListContainerComponent);
     render(this._filmsListComponent, this._loadingComponent, RenderPosition.BEFOREEND);
   }
   _renderNoFilms() {
-    // рендеринг заглушки
     remove(this._filmsListContainerComponent);
     render(this._filmsListComponent, this._noFilmsList, RenderPosition.BEFOREEND);
   }
@@ -241,7 +250,6 @@ export default class MovieList {
     }
   }
   _renderShowMoreButton() {
-    // отрисовка и функции кнопки показа
     if (this._showMoreButtonComponent !== null) {
       this._showMoreButtonComponent = null;
     }

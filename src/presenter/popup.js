@@ -1,6 +1,5 @@
 import FilmPopupView from "../view/film-details.js";
 import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
-import {generateId} from "../utils/common.js";
 import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
@@ -116,7 +115,7 @@ export default class Popup {
     );
   }
   _onDeleteComment(commentId) {
-    const newComments = this._currentFilm.comments.filter((comment) => comment.id !== parseInt(commentId, 10));
+    const newComments = this._currentFilm.comments.filter((comment) => comment !== commentId);
     this._changePopupData(
         UserAction.DELETE_COMMENT,
         UpdateType.PATCH,
@@ -125,6 +124,9 @@ export default class Popup {
             this._currentFilm,
             {
               comments: newComments.slice()
+            },
+            {
+              deletedIdComment: commentId
             }
         )
     );
@@ -132,18 +134,16 @@ export default class Popup {
   _onSendPress(evt) {
     if (evt.keyCode === ENTR_KEYCODE && CTRL_KEYCODE) {
       const insertedText = this._filmPopupComponent.getMessage();
-      const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`).value;
+      const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`);
 
-      if (chosenEmoji && insertedText) {
+      if (chosenEmoji === null || insertedText === ``) {
+        this._filmPopupComponent.getElement().querySelector(`.film-details__new-comment`).classList.add(`shake`);
+      } else {
         const newUserComment = {
-          id: generateId(),
-          text: insertedText,
-          emoji: `./images/emoji/${chosenEmoji}.png`,
-          author: `RandomPerson`,
+          comment: insertedText,
+          emotion: `${chosenEmoji.value}`,
           date: new Date(),
         };
-        const newComments = this._currentFilm.comments.slice();
-        newComments.push(newUserComment);
         this._changePopupData(
             UserAction.ADD_COMMENT,
             UpdateType.PATCH,
@@ -151,7 +151,7 @@ export default class Popup {
                 {},
                 this._currentFilm,
                 {
-                  comments: newComments
+                  comments: newUserComment
                 }
             )
         );

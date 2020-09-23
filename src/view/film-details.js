@@ -130,7 +130,6 @@ export default class FilmPopup extends SmartView {
     this._data = data;
     this._api = api;
     this._emoji = null;
-    this._comment = null;
     this._userMessage = null;
     this._currentFilmComments = currentFilmComments;
 
@@ -160,9 +159,6 @@ export default class FilmPopup extends SmartView {
   removeElement() {
     super.removeElement();
   }
-  reset() {
-    // здесь возможно будет сброс текста комментариев и эмодзи в будущем~
-  }
   getMessage() {
     this._userMessage = this.getElement()
     .querySelector(`.film-details__comment-input`).value;
@@ -190,7 +186,6 @@ export default class FilmPopup extends SmartView {
     this._data.genre.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
   }
   _renderComments(element) {
-
     this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
     const filmComments = this._currentFilmComments.getComments(this._data.id) || [];
 
@@ -204,9 +199,6 @@ export default class FilmPopup extends SmartView {
     this._chosenEmoji(evt.target.dataset.emoji);
     this.updateElement();
   }
-  _chosenComment(comment) {
-    this._comment = comment;
-  }
   onDeleteButtonClick(callback) {
     this._callback.deleteButtonClick = callback;
     this.getElement()
@@ -216,6 +208,9 @@ export default class FilmPopup extends SmartView {
   _onDeleteButton(evt) {
     evt.preventDefault();
     this._callback.deleteButtonClick(evt.target.dataset.id);
+    const deleteButton = this.getElement().querySelector(`.film-details__comment-delete[data-id="${evt.target.dataset.id}"]`);
+    deleteButton.setAttribute(`disabled`, true);
+    deleteButton.textContent = `Deleting...`;
   }
   _onTextInput(evt) {
     evt.preventDefault();
