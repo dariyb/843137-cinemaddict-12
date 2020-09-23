@@ -94,13 +94,27 @@ export default class MovieList {
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._api.updateFilm(update).then((response) => {
-          this._moviesModel.updateFilm(updateType, response);
+        const commentInput = document.querySelector(`.film-details__comment-input`);
+        commentInput.setAttribute(`disabled`, true);
+        this._api.addComment(update).then((response) => {
+          this._moviesModel.addComment(updateType, response);
+          this._filmsComments.updateFilm(updateType, response, update);
+        })
+        .catch(() => {
+          commentInput.removeAttribute(`disabled`);
+          document.querySelector(`.film-details__new-comment`).classList.add(`shake`);
         });
         break;
       case UserAction.DELETE_COMMENT:
-        this._api.updateFilm(update).then((response) => {
-          this._moviesModel.updateFilm(updateType, response);
+        this._api.deleteComment(update.deletedIdComment).then(() => {
+          this._filmsComments.deleteComment(updateType, update);
+          this._moviesModel.updateFilm(updateType, update);
+        })
+        .catch(() => {
+          const deleteButton = document.querySelector(`.film-details__comment-delete[data-id="${update.deletedIdComment}"]`);
+          deleteButton.removeAttribute(`disabled`);
+          deleteButton.textContent = `Delete`;
+          deleteButton.classList.add(`shake`);
         });
         break;
     }

@@ -1,6 +1,6 @@
 import FilmPopupView from "../view/film-details.js";
 import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
-import {generateId} from "../utils/common.js";
+// import {generateId} from "../utils/common.js";
 import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
@@ -116,7 +116,7 @@ export default class Popup {
     );
   }
   _onDeleteComment(commentId) {
-    const newComments = this._currentFilm.comments.filter((comment) => comment.id !== parseInt(commentId, 10));
+    const newComments = this._currentFilm.comments.filter((comment) => comment !== commentId);
     this._changePopupData(
         UserAction.DELETE_COMMENT,
         UpdateType.PATCH,
@@ -125,6 +125,9 @@ export default class Popup {
             this._currentFilm,
             {
               comments: newComments.slice()
+            },
+            {
+              deletedIdComment: commentId
             }
         )
     );
@@ -136,22 +139,30 @@ export default class Popup {
 
       if (chosenEmoji && insertedText) {
         const newUserComment = {
-          id: generateId(),
-          text: insertedText,
-          emoji: `./images/emoji/${chosenEmoji}.png`,
-          author: `RandomPerson`,
+          // id: generateId(),
+          comment: insertedText,
+          emotion: `${chosenEmoji}`,
+          // author: `RandomPerson`,
           date: new Date(),
         };
-        const newComments = this._currentFilm.comments.slice();
-        newComments.push(newUserComment);
+        // const newComments = this._currentFilm.comments.slice();
+        // const newPopComments = this._currentFilmComments.getComments(this._currentFilm.id).slice();
+        // console.log(this._currentFilm.comments);
+        // console.log(this._currentFilmComments.getComments(this._currentFilm.id));
+        // newComments.push(newUserComment.id);
+        // console.log(newComments.push(newUserComment.id));
+        // newPopComments.push(newUserComment);
+        // this._currentFilmComments.slice().push(newUserComment);
         this._changePopupData(
             UserAction.ADD_COMMENT,
             UpdateType.PATCH,
+            // this._currentFilm,
+            // newPopComments
             Object.assign(
                 {},
                 this._currentFilm,
                 {
-                  comments: newComments
+                  comments: newUserComment
                 }
             )
         );

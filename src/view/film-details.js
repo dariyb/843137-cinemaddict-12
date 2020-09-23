@@ -190,7 +190,6 @@ export default class FilmPopup extends SmartView {
     this._data.genre.forEach((genre) => render(this._filmGenreRow.querySelector(`.film-details__cell`), new FilmGenreView(genre), RenderPosition.BEFOREEND));
   }
   _renderComments(element) {
-
     this._filmPopupCommentList = element.querySelector(`.film-details__comments-list`);
     const filmComments = this._currentFilmComments.getComments(this._data.id) || [];
 
@@ -216,6 +215,9 @@ export default class FilmPopup extends SmartView {
   _onDeleteButton(evt) {
     evt.preventDefault();
     this._callback.deleteButtonClick(evt.target.dataset.id);
+    const deleteButton = this.getElement().querySelector(`.film-details__comment-delete[data-id="${evt.target.dataset.id}"]`);
+    deleteButton.setAttribute(`disabled`, true);
+    deleteButton.textContent = `Deleting...`;
   }
   _onTextInput(evt) {
     evt.preventDefault();
