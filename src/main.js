@@ -6,11 +6,8 @@ import StatsPresenter from "./presenter/stats.js";
 import MoviesModel from "./model/movies.js";
 import FilterModel from "./model/filter.js";
 import CommentsModel from "./model/popup-comments.js";
-import {UpdateType} from "./constants.js";
+import {UpdateType, AUTHORIZATION, END_POINT} from "./constants.js";
 import Api from "./api.js";
-
-const AUTHORIZATION = `Basic er883jdzbdw`;
-const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 
 const siteHeaderElement = document.querySelector(`.header`);
 

@@ -5,12 +5,16 @@ const createFilmsStatisticsTemplate = (films) => {
   ;
 };
 
-export default class FilmsStatistics extends AbstractView {
+class FilmsStatistics extends AbstractView {
   constructor(films) {
     super();
     this._films = films;
   }
+
   getTemplate() {
     return createFilmsStatisticsTemplate(this._films);
   }
+
 }
+
+export default FilmsStatistics;

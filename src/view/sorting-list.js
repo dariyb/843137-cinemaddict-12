@@ -11,16 +11,18 @@ const createSiteSortingListTemplate = (currentSortType) => {
   );
 };
 
-export default class Sort extends AbstractView {
+class Sort extends AbstractView {
   constructor(currentSortType) {
     super();
 
     this._currentSortType = currentSortType;
     this._sortTypeChangeClick = this._sortTypeChangeClick.bind(this);
   }
+
   getTemplate() {
     return createSiteSortingListTemplate(this._currentSortType);
   }
+
   _sortTypeChangeClick(evt) {
     if (evt.target.tagName !== `A`) {
       return;
@@ -28,8 +30,12 @@ export default class Sort extends AbstractView {
     evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
   }
+
   onSortTypeClick(callback) {
     this._callback.sortTypeChange = callback;
     this.getElement().addEventListener(`click`, this._sortTypeChangeClick);
   }
+
 }
+
+export default Sort;

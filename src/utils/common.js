@@ -1,36 +1,24 @@
-export const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-export const getRandomNumber = (a = 1, b = 0) => {
-  const lower = Math.min(a, b);
-  const upper = Math.max(a, b);
-  let point = lower + Math.random() * (upper - lower);
-
-  return point.toFixed(1);
-};
-
-export const shuffleArray = (array) => {
-  let count = array.length;
-  while (count > 0) {
-    let index = Math.floor(Math.random() * count);
-    count -= 1;
-    let temp = array[count];
-    array[count] = array[index];
-    array[index] = temp;
-  }
-  return array;
-};
-
-export const getRandomizeInfo = (info) => {
-  const randomIndex = getRandomInteger(0, info.length - 1);
-  return info[randomIndex];
-};
-
-export const uniqueNumber = () => {
+const uniqueNumber = () => {
   let i = 0;
   return () => i++;
 };
+
+const runningFilmTime = (runnTime) => {
+  if (runnTime > 60) {
+    let hour = Math.floor((runnTime / 60));
+    let minutes = Math.floor(runnTime - (hour * 60));
+    if (minutes > 60) {
+      hour = Math.floor(hour + (minutes / 60));
+      minutes = Math.floor(minutes - (minutes / 60));
+    }
+    if (minutes < 60) {
+      minutes = Math.floor(minutes);
+    }
+    return `${hour}h ${minutes}m`;
+  } else if (runnTime < 60) {
+    return `${runnTime}m`;
+  }
+  return `${runnTime}h`;
+};
+
+export {uniqueNumber, runningFilmTime};

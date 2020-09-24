@@ -7,8 +7,10 @@ const createFilmsExtraListContainer = () => {
   );
 };
 
-export default class FilmsExtraListContainer extends AbstractView {
+class FilmsExtraListContainer extends AbstractView {
   getTemplate() {
     return createFilmsExtraListContainer();
   }
 }
+
+export default FilmsExtraListContainer;

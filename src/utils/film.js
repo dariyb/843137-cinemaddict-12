@@ -1,24 +1,27 @@
 import moment from "moment";
 
-export const DatePlace = {
-  POPUPDATE: `film release`,
-  COMMENTDATE: `comment date`,
+const DatePlace = {
+  POPUP_DATE: `film release`,
+  COMMENT_DATE: `comment date`,
   RUNNING_TIME: `running-time`
 };
-export const convertDate = (date, place) => {
+
+const convertDate = (date, place) => {
   switch (place) {
-    case DatePlace.POPUPDATE:
+    case DatePlace.POPUP_DATE:
       return moment(date).format(`DD MMMM YYYY`);
-    case DatePlace.COMMENTDATE:
+    case DatePlace.COMMENT_DATE:
       return moment(date).format(`YYYY/MM/DD HH:mm`);
   }
   throw new Error(`This is not the right format`);
 };
 
-export const sortFilmDateUp = (filmA, filmB) => {
+const sortFilmDateUp = (filmA, filmB) => {
   return filmB.releaseDate - filmA.releaseDate;
 };
 
-export const sortFilmRatingUp = (filmA, filmB) => {
+const sortFilmRatingUp = (filmA, filmB) => {
   return filmB.rating - filmA.rating;
 };
+
+export {DatePlace, convertDate, sortFilmDateUp, sortFilmRatingUp};

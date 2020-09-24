@@ -7,19 +7,25 @@ const createSiteFilmsSectionTemplate = () => {
   );
 };
 
-export default class FilmsSection extends AbstractView {
+class FilmsSection extends AbstractView {
   constructor() {
     super();
     this._onFilmsSection = this._onFilmsSection.bind(this);
   }
+
   getTemplate() {
     return createSiteFilmsSectionTemplate();
   }
+
   _onFilmsSection(evt) {
     this._callback.filmsSectionClick(evt);
   }
+
   onFilmsSectionClick(callback) {
     this._callback.filmsSectionClick = callback;
     this.getElement().addEventListener(`click`, this._onFilmsSection);
   }
+
 }
+
+export default FilmsSection;

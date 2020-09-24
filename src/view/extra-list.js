@@ -9,12 +9,16 @@ const createFilmsExtraList = (title) => {
   );
 };
 
-export default class FilmsExtraList extends AbstractView {
+class FilmsExtraList extends AbstractView {
   constructor(title) {
     super();
     this._title = title;
   }
+
   getTemplate() {
     return createFilmsExtraList(this._title);
   }
+
 }
+
+export default FilmsExtraList;
