@@ -12,7 +12,7 @@ const SuccessHTTPStatusRange = {
   MAX: 299
 };
 
-export default class Api {
+class Api {
   constructor(endPoint, authorization) {
     this._endPoint = endPoint;
     this._authorization = authorization;
@@ -83,3 +83,5 @@ export default class Api {
     throw err;
   }
 }
+
+export default Api;

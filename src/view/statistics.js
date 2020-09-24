@@ -1,11 +1,9 @@
 import SmartView from './smart.js';
-import {StatsFilter} from "../constants.js";
+import {StatsFilter, BAR_HEIGHT} from "../constants.js";
 import {getUserStatus} from "../utils/stats.js";
 import moment from "moment";
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-
-const BAR_HEIGHT = 50;
 
 const generateChart = (statisticCtx, genres, genresCount) => {
   return new Chart(statisticCtx, {
@@ -117,7 +115,7 @@ const createStatisticsTemplate = ({filter, watchedFilmsCount, totalDuration, top
   </section>`;
 };
 
-export default class Statistics extends SmartView {
+class Statistics extends SmartView {
   constructor(statsData, moviesModel) {
     super();
 
@@ -130,17 +128,21 @@ export default class Statistics extends SmartView {
 
     this._setChart();
   }
+
   getTemplate() {
     return createStatisticsTemplate(this._statsData, getUserStatus(this._moviesModel.getIsHistoryMovies()));
   }
+
   _onChosenStats(evt) {
     evt.preventDefault();
     this._callback.statsValue(evt.target.value);
   }
+
   onStatsFilterClick(callback) {
     this._callback.statsValue = callback;
     this.getElement().querySelectorAll(`.statistic__filters-input`).forEach((filter) => filter.addEventListener(`click`, this._onChosenStats));
   }
+
   _setChart() {
     const statisticCtx = this.getElement().querySelector(`.statistic__chart`);
     if (this._statsData.genreCount !== null) {
@@ -151,4 +153,7 @@ export default class Statistics extends SmartView {
       generateChart(statisticCtx, this._genres, this._genreCount);
     }
   }
+
 }
+
+export default Statistics;

@@ -3,7 +3,7 @@ import Abstract from "../view/abstract.js";
 import {RenderPosition, render, remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
-export default class FilmElement {
+class FilmElement {
   constructor(container, changeData) {
     this._container = container;
     this._changeData = changeData;
@@ -13,6 +13,7 @@ export default class FilmElement {
     this._onWatchlistClick = this._onWatchlistClick.bind(this);
     this._onHistoryClick = this._onHistoryClick.bind(this);
   }
+
   init(film) {
     this._film = film;
 
@@ -36,9 +37,11 @@ export default class FilmElement {
     }
     remove(prevFilmComponent);
   }
+
   destroy() {
     remove(this._filmComponent);
   }
+
   _onFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
@@ -52,6 +55,7 @@ export default class FilmElement {
         )
     );
   }
+
   _onWatchlistClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
@@ -65,6 +69,7 @@ export default class FilmElement {
         )
     );
   }
+
   _onHistoryClick() {
     this._changeData(
         UserAction.UPDATE_FILM_INFO,
@@ -78,4 +83,7 @@ export default class FilmElement {
         )
     );
   }
+
 }
+
+export default FilmElement;

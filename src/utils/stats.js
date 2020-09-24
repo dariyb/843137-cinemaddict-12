@@ -5,7 +5,7 @@ const WatchedFilmsCount = {
   MOVIE_BUFF: `21`
 };
 
-export const getUserStatus = (watchedFilmsCount) => {
+const getUserStatus = (watchedFilmsCount) => {
   let userStatus = null;
   switch (true) {
     case watchedFilmsCount >= WatchedFilmsCount.NOVICE && watchedFilmsCount < WatchedFilmsCount.FAN:
@@ -23,3 +23,5 @@ export const getUserStatus = (watchedFilmsCount) => {
   }
   return userStatus;
 };
+
+export {getUserStatus};

@@ -1,36 +1,35 @@
-export const ESC_KEYCODE = 27;
-export const ENTR_KEYCODE = 13;
-export const CTRL_KEYCODE = 17;
-export const FILM_COUNT = 20;
-export const FILM_COUNT_PER_STEP = 5;
-export const TOP_RATED = 2;
-export const MOST_COMMENTED = 2;
-export const DOUBLE_SECTION = 2;
-export const MIN_COMMENT_AMOUNT = 0;
-export const MAX_COMMENT_AMOUNT = 5;
+const ESC_KEYCODE = 27;
+const ENTR_KEYCODE = 13;
+const FILM_COUNT_PER_STEP = 5;
+const TOP_RATED = 2;
+const MOST_COMMENTED = 2;
+const MAX_DESCRIPTION_LENGTH = 140;
+const AUTHORIZATION = `Basic er883jdzbdw`;
+const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
+const BAR_HEIGHT = 50;
 
-export const SortType = {
+const SortType = {
   DEFAULT: `default`,
   DATE: `date-up`,
   RATING: `rating-up`
 };
 
-export const EMOJIES = [`smile.png`, `sleeping.png`, `puke.png`, `angry.png`];
+const EMOJIES = [`smile.png`, `sleeping.png`, `puke.png`, `angry.png`];
 
-export const UserAction = {
+const UserAction = {
   UPDATE_FILM_INFO: `UPDATE_FILM_INFO`,
   ADD_COMMENT: `ADD_COMMENT`,
   DELETE_COMMENT: `DELETE_COMMENT`
 };
 
-export const UpdateType = {
+const UpdateType = {
   PATCH: `PATCH`,
   MINOR: `MINOR`,
   MAJOR: `MAJOR`,
   INIT: `INIT`
 };
 
-export const FilterType = {
+const FilterType = {
   ALL: `All Movies`,
   WATCHLIST: `Watchlist`,
   HISTORY: `History`,
@@ -38,15 +37,17 @@ export const FilterType = {
   STATS: `Stats`
 };
 
-export const MenuItem = {
+const MenuItem = {
   DEFAULT: `default`,
   STATS: `stats`
 };
 
-export const StatsFilter = {
+const StatsFilter = {
   ALL_TIME: `all-time`,
   TODAY: `today`,
   WEEK: `week`,
   MONTH: `month`,
   YEAR: `year`
 };
+
+export {ESC_KEYCODE, ENTR_KEYCODE, FILM_COUNT_PER_STEP, TOP_RATED, MOST_COMMENTED, MAX_DESCRIPTION_LENGTH, AUTHORIZATION, END_POINT, BAR_HEIGHT, SortType, EMOJIES, UserAction, UpdateType, FilterType, MenuItem, StatsFilter};

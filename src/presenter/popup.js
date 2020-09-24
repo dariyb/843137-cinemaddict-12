@@ -1,9 +1,9 @@
 import FilmPopupView from "../view/film-details.js";
-import {ESC_KEYCODE, ENTR_KEYCODE, CTRL_KEYCODE} from "../constants.js";
+import {ESC_KEYCODE, ENTR_KEYCODE} from "../constants.js";
 import {remove, replace} from "../utils/render.js";
 import {UserAction, UpdateType} from "../constants.js";
 
-export default class Popup {
+class Popup {
   constructor(filmPopupContainer, changePopupData, close, api, currentFilmComments) {
     this._filmPopupContainer = filmPopupContainer;
     this._changePopupData = changePopupData;
@@ -25,6 +25,7 @@ export default class Popup {
     this._closePopup = this._closePopup.bind(this);
 
   }
+
   init(currentFilm) {
 
     document.addEventListener(`keydown`, this._onEscPress);
@@ -52,19 +53,23 @@ export default class Popup {
     }
     remove(prevFilmComponent);
   }
+
   _onEscPress(evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       this._closePopup();
     }
   }
+
   _onCloseButtonClick(evt) {
     if (evt.target.classList.contains(`film-details__close-btn`)) {
       this._closePopup();
     }
   }
+
   _closePopup() {
     this.close();
   }
+
   removePopup() {
     this._popup = document.querySelector(`.film-details`);
     if (this._popup) {
@@ -75,6 +80,7 @@ export default class Popup {
     document.removeEventListener(`click`, this._onCloseButtonClick);
     document.removeEventListener(`keydown`, this._onSendPress);
   }
+
   _onFavoritePopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
@@ -88,6 +94,7 @@ export default class Popup {
         )
     );
   }
+
   _onWatchlistPopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
@@ -101,6 +108,7 @@ export default class Popup {
         )
     );
   }
+
   _onHistoryPopup() {
     this._changePopupData(
         UserAction.UPDATE_FILM_INFO,
@@ -114,6 +122,7 @@ export default class Popup {
         )
     );
   }
+
   _onDeleteComment(commentId) {
     const newComments = this._currentFilm.comments.filter((comment) => comment !== commentId);
     this._changePopupData(
@@ -131,13 +140,22 @@ export default class Popup {
         )
     );
   }
+
+  _shakeForm(formElement) {
+    if (!formElement.classList.contains(`shake`)) {
+      formElement.classList.add(`shake`);
+      setTimeout(() => formElement.classList.remove(`shake`), 1000);
+    }
+  }
+
   _onSendPress(evt) {
-    if (evt.keyCode === ENTR_KEYCODE && CTRL_KEYCODE) {
+    if (evt.keyCode === ENTR_KEYCODE && evt.ctrlKey) {
       const insertedText = this._filmPopupComponent.getMessage();
       const chosenEmoji = this._filmPopupComponent.getElement().querySelector(`input[type='radio']:checked`);
+      const commentForm = this._filmPopupComponent.getElement().querySelector(`.film-details__new-comment`);
 
       if (chosenEmoji === null || insertedText === ``) {
-        this._filmPopupComponent.getElement().querySelector(`.film-details__new-comment`).classList.add(`shake`);
+        this._shakeForm(commentForm);
       } else {
         const newUserComment = {
           comment: insertedText,
@@ -158,4 +176,7 @@ export default class Popup {
       }
     }
   }
+
 }
+
+export default Popup;

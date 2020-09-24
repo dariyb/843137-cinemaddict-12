@@ -4,12 +4,16 @@ const getFilmGenre = (genres) => {
   return `<span class="film-details__genre">${genres}</span>`;
 };
 
-export default class FilmGenre extends AbstractView {
+class FilmGenre extends AbstractView {
   constructor(genres) {
     super();
     this._genres = genres;
   }
+
   getTemplate() {
     return getFilmGenre(this._genres);
   }
+
 }
+
+export default FilmGenre;

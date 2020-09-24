@@ -3,7 +3,7 @@ import {RenderPosition, render, remove, replace} from "../utils/render.js";
 import {filter} from "../utils/filter.js";
 import {FilterType, UpdateType, MenuItem} from "../constants.js";
 
-export default class Filter {
+class Filter {
   constructor(filterContainer, filterModel, moviesModel, statisticsPresenter, movieListPresenter) {
     this._filterContainer = filterContainer;
     this._filterModel = filterModel;
@@ -23,6 +23,7 @@ export default class Filter {
     this._moviesModel.addObserver(this._onModelEvent);
     this._filterModel.addObserver(this._onModelEvent);
   }
+
   init() {
     this._currentFilter = this._filterModel.getFilter();
 
@@ -40,6 +41,7 @@ export default class Filter {
     replace(this._filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
+
   _openStatistics() {
     if (this._statisticMode === MenuItem.DEFAULT) {
       this._statisticMode = MenuItem.STATS;
@@ -51,15 +53,18 @@ export default class Filter {
       this._statisticsPresenter.removeSection();
     }
   }
+
   _onModelEvent() {
     this.init();
   }
+
   _onFilterChangeType(filterType) {
     if (this._currentFilter === filterType) {
       return;
     }
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
+
   _getFilters() {
     const films = this._moviesModel.getFilms();
 
@@ -86,4 +91,7 @@ export default class Filter {
       },
     ];
   }
+
 }
+
+export default Filter;
