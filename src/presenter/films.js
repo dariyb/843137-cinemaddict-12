@@ -327,7 +327,7 @@ class MovieList {
 
   _cardFilmClickHandler(evt) {
     if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
-      this._popupId = event.target.parentNode.dataset.id;
+      this._popupId = evt.target.parentNode.dataset.id;
       this._currentFilm = this._findElement(this._popupId);
       this._renderPopupFilm();
     }
