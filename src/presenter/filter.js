@@ -45,12 +45,8 @@ class Filter {
   _openStatistics() {
     if (this._statisticMode === MenuItem.DEFAULT) {
       this._statisticMode = MenuItem.STATS;
-      this._movieListPresenter.destroyFilmsSection();
+      this._movieListPresenter.hideFilmsSection();
       this._statisticsPresenter.init();
-    } else {
-      this._statisticMode = MenuItem.DEFAULT;
-      this._movieListPresenter.init();
-      this._statisticsPresenter.removeSection();
     }
   }
 
@@ -62,6 +58,11 @@ class Filter {
     if (this._currentFilter === filterType) {
       return;
     }
+    if (filterType !== `stats`) {
+      this._statisticMode = MenuItem.DEFAULT;
+      this._statisticsPresenter.removeSection();
+      this._movieListPresenter.showFilmsSection();
+    }
     this._filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
 
@@ -72,7 +73,7 @@ class Filter {
       {
         type: FilterType.ALL,
         name: `All Movies`,
-        count: 0
+        count: filter[FilterType.ALL](films).length
       },
       {
         type: FilterType.WATCHLIST,

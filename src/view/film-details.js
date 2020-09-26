@@ -1,7 +1,7 @@
 import SmartView from "./smart.js";
 import FilmCommentView from "../view/popup-comments.js";
 import FilmGenreView from "../view/genre.js";
-import {EMOJIES} from "../constants.js";
+import {EMOJIES, DELETING} from "../constants.js";
 import {RenderPosition, render, createElement} from "../utils/render.js";
 import {convertDate} from "../utils/film.js";
 import {runningFilmTime} from "../utils/common.js";
@@ -223,7 +223,7 @@ class FilmPopup extends SmartView {
     this._callback.deleteButtonClick(evt.target.dataset.id);
     const deleteButton = this.getElement().querySelector(`.film-details__comment-delete[data-id="${evt.target.dataset.id}"]`);
     deleteButton.setAttribute(`disabled`, true);
-    deleteButton.textContent = `Deleting...`;
+    deleteButton.textContent = DELETING;
   }
 
   _onTextInput(evt) {
