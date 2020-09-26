@@ -7,6 +7,8 @@ const MAX_DESCRIPTION_LENGTH = 140;
 const AUTHORIZATION = `Basic er883jdzbdw`;
 const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 const BAR_HEIGHT = 50;
+const DELETE = `Delete`;
+const DELETING = `Deleting...`;
 
 const SortType = {
   DEFAULT: `default`,
@@ -50,4 +52,4 @@ const StatsFilter = {
   YEAR: `year`
 };
 
-export {ESC_KEYCODE, ENTR_KEYCODE, FILM_COUNT_PER_STEP, TOP_RATED, MOST_COMMENTED, MAX_DESCRIPTION_LENGTH, AUTHORIZATION, END_POINT, BAR_HEIGHT, SortType, EMOJIES, UserAction, UpdateType, FilterType, MenuItem, StatsFilter};
+export {ESC_KEYCODE, ENTR_KEYCODE, FILM_COUNT_PER_STEP, TOP_RATED, MOST_COMMENTED, MAX_DESCRIPTION_LENGTH, AUTHORIZATION, END_POINT, BAR_HEIGHT, SortType, EMOJIES, UserAction, UpdateType, FilterType, MenuItem, StatsFilter, DELETE, DELETING};

@@ -13,7 +13,7 @@ import FilmsStatisticsView from "../view/films-statistics.js";
 import {RenderPosition, render, remove, replace} from "../utils/render.js";
 import {sortFilmDateUp, sortFilmRatingUp} from "../utils/film.js";
 import {filter} from "../utils/filter.js";
-import {SortType, UserAction, UpdateType} from "../constants.js";
+import {SortType, UserAction, UpdateType, DELETE} from "../constants.js";
 import MoviesModel from "../model/movies.js";
 
 class MovieList {
@@ -72,11 +72,16 @@ class MovieList {
     }
   }
 
-  destroyFilmsSection() {
+  hideFilmsSection() {
     this._clearFilmsSection({resetRenderedFilmCount: true, resetSortType: true});
-    remove(this._filmsSectionComponent);
+    this._filmsSectionComponent.getElement().classList.add(`visually-hidden`);
     this._moviesModel.removeObserver(this._onModelEvent);
     this._filterModel.removeObserver(this._onModelEvent);
+  }
+  showFilmsSection() {
+    this._filmsSectionComponent.getElement().classList.remove(`visually-hidden`);
+    this._moviesModel.addObserver(this._onModelEvent);
+    this._filterModel.addObserver(this._onModelEvent);
   }
 
   _getMovies() {
@@ -120,7 +125,7 @@ class MovieList {
         .catch(() => {
           const deleteButton = document.querySelector(`.film-details__comment-delete[data-id="${update.deletedIdComment}"]`);
           deleteButton.removeAttribute(`disabled`);
-          deleteButton.textContent = `Delete`;
+          deleteButton.textContent = DELETE;
           deleteButton.classList.add(`shake`);
         });
         break;
