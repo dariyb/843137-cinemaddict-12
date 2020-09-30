@@ -9,6 +9,9 @@ const END_POINT = `https://12.ecmascript.pages.academy/cinemaddict`;
 const BAR_HEIGHT = 50;
 const DELETE = `Delete`;
 const DELETING = `Deleting...`;
+const STORE_PREFIX = `cinemaddict-localstorage`;
+const STORE_VERSION = `v12`;
+const STORE_NAME = `${STORE_PREFIX}-${STORE_VERSION}`;
 
 const SortType = {
   DEFAULT: `default`,
@@ -52,4 +55,4 @@ const StatsFilter = {
   YEAR: `year`
 };
 
-export {ESC_KEYCODE, ENTR_KEYCODE, FILM_COUNT_PER_STEP, TOP_RATED, MOST_COMMENTED, MAX_DESCRIPTION_LENGTH, AUTHORIZATION, END_POINT, BAR_HEIGHT, SortType, EMOJIES, UserAction, UpdateType, FilterType, MenuItem, StatsFilter, DELETE, DELETING};
+export {ESC_KEYCODE, ENTR_KEYCODE, FILM_COUNT_PER_STEP, TOP_RATED, MOST_COMMENTED, MAX_DESCRIPTION_LENGTH, AUTHORIZATION, END_POINT, BAR_HEIGHT, SortType, EMOJIES, UserAction, UpdateType, FilterType, MenuItem, StatsFilter, DELETE, DELETING, STORE_NAME};

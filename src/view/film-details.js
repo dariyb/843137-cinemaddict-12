@@ -184,6 +184,7 @@ class FilmPopup extends SmartView {
     this.onFavoritePopupClick(this._callback.favoriteClick);
     this.onWatchlistPopupClick(this._callback.watchlistClick);
     this.onHistoryPopupClick(this._callback.historyClick);
+    this.onDeleteButtonClick(this._callback.deleteButtonClick);
   }
 
   _renderGenre(element) {
