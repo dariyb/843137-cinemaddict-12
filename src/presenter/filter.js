@@ -55,6 +55,7 @@ class Filter {
   }
 
   _onFilterChangeType(filterType) {
+    this._currentFilter = null;
     if (this._currentFilter === filterType) {
       return;
     }

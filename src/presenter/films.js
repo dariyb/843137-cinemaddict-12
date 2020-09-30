@@ -115,6 +115,7 @@ class MovieList {
         .catch(() => {
           commentInput.removeAttribute(`disabled`);
           document.querySelector(`.film-details__new-comment`).classList.add(`shake`);
+          setTimeout(() => document.querySelector(`.film-details__new-comment`).classList.remove(`shake`), 1000);
         });
         break;
       case UserAction.DELETE_COMMENT:
